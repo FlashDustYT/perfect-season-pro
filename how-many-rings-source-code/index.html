@@ -1,0 +1,2750 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How Many Rings?</title>
+  <style>
+    :root {
+      --ink: #10151f;
+      --ink-2: #202837;
+      --paper: #f6f1e8;
+      --paper-2: #fffdf8;
+      --line: rgba(16, 21, 31, 0.14);
+      --muted: #5e6774;
+      --court: #a86138;
+      --court-light: #d99a55;
+      --teal: #13a89e;
+      --red: #c84d55;
+      --gold: #e8bb47;
+      --sky: #4f8fca;
+      --violet: #7c65b8;
+      --green: #2f9464;
+      --shadow: 0 20px 70px rgba(6, 9, 14, 0.26);
+      --radius: 8px;
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px) 0 0 / 48px 48px,
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px) 0 0 / 48px 48px,
+        linear-gradient(135deg, #0a1018 0%, #151d2c 42%, #36251a 100%);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.48;
+    }
+
+    .app {
+      min-height: 100vh;
+      padding: 18px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(170px, 1fr) auto minmax(280px, 1fr);
+      gap: 16px;
+      align-items: center;
+      max-width: 1480px;
+      margin: 0 auto 16px;
+      padding: 12px;
+      color: var(--paper);
+      background:
+        linear-gradient(90deg, rgba(232,187,71,0.16), transparent 38%),
+        rgba(10, 16, 24, 0.62);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.22);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .ball-mark {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 50%, #10151f 0 34%, transparent 35%),
+        conic-gradient(from 20deg, #fff4b8, var(--gold), #9a6f19, #fff4b8);
+      border: 2px solid rgba(255,255,255,0.5);
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.12), 0 10px 24px rgba(0,0,0,0.28);
+      position: relative;
+    }
+
+    .ball-mark::before,
+    .ball-mark::after {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border: 2px solid rgba(255,255,255,0.55);
+      border-top-color: transparent;
+      border-bottom-color: transparent;
+      border-radius: 50%;
+    }
+
+    .ball-mark::after {
+      inset: 15px 12px -5px;
+      border: 0;
+      border-radius: 2px;
+      background: linear-gradient(90deg, transparent 0 30%, rgba(232,187,71,0.95) 31% 69%, transparent 70%);
+      transform: none;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.55rem, 1.25rem + 1vw, 2.55rem);
+      line-height: 0.94;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    .brand small {
+      display: block;
+      margin-top: 5px;
+      color: rgba(247, 241, 227, 0.74);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.68rem;
+      letter-spacing: 0;
+    }
+
+    .mode-toggle {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(96px, 1fr));
+      gap: 4px;
+      padding: 4px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: var(--radius);
+    }
+
+    .mode-toggle button {
+      min-height: 38px;
+      color: rgba(247, 241, 227, 0.76);
+      background: transparent;
+      border-radius: 6px;
+      font-weight: 800;
+    }
+
+    .mode-toggle button.active {
+      color: var(--ink);
+      background: var(--paper);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.14);
+    }
+
+    .audio-btn {
+      min-height: 42px;
+      padding: 7px 10px;
+      color: var(--paper);
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: var(--radius);
+      font-size: 0.72rem;
+      font-weight: 1000;
+      text-transform: uppercase;
+    }
+
+    .audio-btn.on {
+      color: var(--ink);
+      background: linear-gradient(135deg, #fff4b8, var(--gold));
+      border-color: rgba(232,187,71,0.72);
+    }
+
+    .top-stats {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .creator-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 7px 10px;
+      color: var(--paper);
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: var(--radius);
+      font-size: 0.72rem;
+      font-weight: 1000;
+      text-transform: uppercase;
+    }
+
+    .creator-chip b {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      color: var(--ink);
+      background: var(--paper);
+      border-radius: 50%;
+      font-size: 0.64rem;
+      line-height: 1;
+    }
+
+    .top-pill {
+      display: grid;
+      min-width: 76px;
+      padding: 8px 10px;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      text-align: center;
+    }
+
+    .top-pill span {
+      color: rgba(247, 241, 227, 0.72);
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .top-pill strong {
+      color: #fffaf0;
+      font-size: 1.05rem;
+      line-height: 1.1;
+    }
+
+    .game {
+      display: grid;
+      grid-template-columns: minmax(0, 1.42fr) minmax(360px, 0.72fr);
+      gap: 18px;
+      max-width: 1480px;
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .stage,
+    .roster-panel,
+    .modal-sheet {
+      background: rgba(255, 253, 248, 0.97);
+      border: 1px solid rgba(255,255,255,0.5);
+      box-shadow: var(--shadow);
+      border-radius: 12px;
+    }
+
+    .stage {
+      overflow: hidden;
+    }
+
+    .court-wrap {
+      position: relative;
+      background:
+        linear-gradient(120deg, rgba(19,168,158,0.2), transparent 46%),
+        linear-gradient(135deg, #4c2c1d, #bd743e 44%, #161d2b);
+      min-height: 300px;
+      border-bottom: 1px solid rgba(18,20,25,0.16);
+    }
+
+    .court-art {
+      display: block;
+      width: 100%;
+      height: 320px;
+    }
+
+    .court-art text {
+      font-family: inherit;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .court-player {
+      transition: transform 180ms ease, opacity 180ms ease;
+    }
+
+    .court-player.empty {
+      opacity: 0.34;
+    }
+
+    .court-player.filled {
+      filter: drop-shadow(0 7px 10px rgba(18,20,25,0.28));
+    }
+
+    .scorebug {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--paper);
+      pointer-events: none;
+    }
+
+    .scorebug strong {
+      display: block;
+      font-size: clamp(1.15rem, 1rem + 0.7vw, 1.8rem);
+      line-height: 1;
+    }
+
+    .scorebug span {
+      color: rgba(255,250,240,0.78);
+      font-size: 0.76rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .scorebug .live {
+      min-width: 132px;
+      text-align: right;
+    }
+
+    .draft-area {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.52fr) minmax(0, 1fr);
+      gap: 16px;
+      padding: 16px;
+    }
+
+    .slot-panel,
+    .choices-panel,
+    .season-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--paper-2);
+    }
+
+    .slot-panel {
+      padding: 14px;
+    }
+
+    .round-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .round-head h2,
+    .choices-panel h2,
+    .roster-panel h2,
+    .season-card h2 {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.1;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 26px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      color: var(--paper-2);
+      background: var(--ink);
+      font-size: 0.73rem;
+      font-weight: 900;
+    }
+
+    .reels {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin: 12px 0;
+    }
+
+    .reel {
+      position: relative;
+      min-height: 88px;
+      display: grid;
+      align-content: center;
+      padding: 14px;
+      overflow: hidden;
+      color: var(--paper);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px) 0 0 / 18px 18px,
+        linear-gradient(135deg, #111827, #283246 62%, #5b3823);
+      border: 1px solid rgba(18, 20, 25, 0.22);
+    }
+
+    .reel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(255,255,255,0.14), transparent 28%, transparent 72%, rgba(0,0,0,0.16));
+      pointer-events: none;
+    }
+
+    .reel span {
+      position: relative;
+      z-index: 1;
+      color: rgba(247,241,227,0.68);
+      font-size: 0.72rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .reel strong {
+      position: relative;
+      z-index: 1;
+      margin-top: 4px;
+      color: var(--paper-2);
+      font-size: clamp(1.25rem, 1rem + 1vw, 2rem);
+      line-height: 1;
+      word-break: break-word;
+    }
+
+    .action-row,
+    .season-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .primary-btn,
+    .secondary-btn,
+    .ghost-btn,
+    .danger-btn {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, #cf4f55, #a9363f);
+      color: #fff;
+      box-shadow: 0 12px 22px rgba(200,77,85,0.24);
+    }
+
+    .secondary-btn {
+      background: linear-gradient(135deg, var(--ink), #303c51);
+      color: #fff;
+    }
+
+    .ghost-btn {
+      background: #eef2f1;
+      color: var(--ink);
+      border: 1px solid rgba(18,20,25,0.1);
+    }
+
+    .danger-btn {
+      background: #f2ded5;
+      color: #8b2e27;
+      border: 1px solid #e3b9ad;
+    }
+
+    .button-icon {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+    }
+
+    .skip-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .mini-ledger {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .mini-ledger div {
+      min-width: 0;
+      padding: 10px 8px;
+      background: #eef1ec;
+      border: 1px solid rgba(18,20,25,0.08);
+      border-radius: var(--radius);
+      text-align: center;
+    }
+
+    .mini-ledger span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.66rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .mini-ledger strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .choices-panel {
+      min-height: 412px;
+      padding: 14px;
+    }
+
+    .how-play {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+      border-top: 1px solid rgba(16,21,31,0.12);
+      background:
+        linear-gradient(90deg, rgba(232,187,71,0.1), transparent 42%),
+        rgba(246,241,232,0.72);
+    }
+
+    .how-play h2 {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.1;
+    }
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .how-item {
+      padding: 10px;
+      border: 1px solid rgba(16,21,31,0.1);
+      border-radius: var(--radius);
+      background: rgba(255,253,248,0.82);
+    }
+
+    .how-item strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--ink);
+      font-size: 0.78rem;
+      font-weight: 1000;
+      text-transform: uppercase;
+    }
+
+    .how-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.35;
+      font-weight: 800;
+    }
+
+    .choices-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .hint {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .player-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+    }
+
+    .player-card {
+      position: relative;
+      display: grid;
+      gap: 10px;
+      min-height: 188px;
+      padding: 12px;
+      border-radius: var(--radius);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.68)),
+        #f4efe6;
+      border: 1px solid rgba(18,20,25,0.12);
+      text-align: left;
+      color: var(--ink);
+      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .player-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 4px;
+      border-radius: 12px 12px 0 0;
+      background: var(--accent, var(--teal));
+    }
+
+    .player-card:hover,
+    .player-card:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(29,154,145,0.68);
+      box-shadow: 0 12px 24px rgba(18,20,25,0.12);
+      outline: none;
+    }
+
+    .player-top {
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      border-radius: 50%;
+      background: var(--accent, var(--teal));
+      border: 3px solid rgba(255,255,255,0.86);
+      box-shadow: 0 6px 14px rgba(18,20,25,0.16);
+      font-weight: 1000;
+      letter-spacing: 0;
+    }
+
+    .player-name {
+      min-width: 0;
+    }
+
+    .player-name strong {
+      display: block;
+      font-size: 1rem;
+      line-height: 1.08;
+    }
+
+    .player-name span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    .rating-chip {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--ink), #303c51);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 1000;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+    }
+
+    .stat {
+      padding: 7px 5px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.58);
+      text-align: center;
+      border: 1px solid rgba(18,20,25,0.07);
+    }
+
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.63rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 2px;
+      font-size: 0.88rem;
+      line-height: 1;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 23px;
+      padding: 4px 7px;
+      border-radius: 999px;
+      background: rgba(19,168,158,0.14);
+      color: #0d6b66;
+      font-size: 0.67rem;
+      font-weight: 900;
+    }
+
+    .hidden-line {
+      display: grid;
+      place-items: center;
+      min-height: 50px;
+      border-radius: var(--radius);
+      background:
+        repeating-linear-gradient(45deg, #efe3cf 0 8px, #e6d7c0 8px 16px);
+      color: #5e554d;
+      font-weight: 900;
+      border: 1px dashed rgba(18,20,25,0.18);
+    }
+
+    .empty-state {
+      min-height: 318px;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      color: var(--muted);
+      text-align: center;
+      border: 1px dashed rgba(18,20,25,0.2);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(79,143,202,0.12), transparent 52%),
+        #f2eee6;
+      font-weight: 800;
+    }
+
+    .roster-panel {
+      position: sticky;
+      top: 18px;
+      padding: 14px;
+    }
+
+    .roster-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .roster-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .slot-card {
+      min-height: 86px;
+      padding: 9px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(18,20,25,0.1);
+      background: #f8f5ef;
+    }
+
+    .slot-card.empty {
+      display: grid;
+      place-items: center;
+      color: #8f8170;
+      border-style: dashed;
+      background: #ece8df;
+      font-weight: 900;
+    }
+
+    .slot-card .slot-num {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 0.66rem;
+      font-weight: 1000;
+      text-transform: uppercase;
+    }
+
+    .slot-name {
+      display: block;
+      margin-top: 6px;
+      font-weight: 1000;
+      font-size: 0.92rem;
+      line-height: 1.08;
+    }
+
+    .slot-meta {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .position-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 7px;
+    }
+
+    .pos-chip,
+    .move-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 24px;
+      padding: 4px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(18,20,25,0.1);
+      font-size: 0.64rem;
+      font-weight: 1000;
+      line-height: 1;
+    }
+
+    .pos-chip {
+      color: #51483e;
+      background: #ebe5d9;
+    }
+
+    .move-chip {
+      color: #176b65;
+      background: rgba(19,168,158,0.12);
+    }
+
+    .move-chip:hover,
+    .move-chip:focus-visible {
+      outline: none;
+      border-color: rgba(29,154,145,0.55);
+      background: rgba(29,154,145,0.2);
+    }
+
+    .move-chip:disabled {
+      opacity: 0.38;
+    }
+
+    .meter-stack {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .meter {
+      display: grid;
+      gap: 4px;
+    }
+
+    .meter-label {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      color: #4b443e;
+      font-size: 0.72rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .bar {
+      height: 9px;
+      border-radius: 999px;
+      background: #dbe0dc;
+      overflow: hidden;
+    }
+
+    .bar > i {
+      display: block;
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: var(--bar-color, var(--teal));
+      transition: width 300ms ease;
+    }
+
+    .season-card {
+      margin-top: 12px;
+      padding: 12px;
+    }
+
+    .season-card.hidden {
+      display: none;
+    }
+
+    .result-main {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: center;
+      margin: 10px 0;
+    }
+
+    .record {
+      min-width: 96px;
+      padding: 10px;
+      color: #fff;
+      background:
+        linear-gradient(135deg, rgba(232,187,71,0.34), transparent 48%),
+        var(--ink);
+      border-radius: var(--radius);
+      text-align: center;
+    }
+
+    .record strong {
+      display: block;
+      font-size: 1.7rem;
+      line-height: 1;
+    }
+
+    .record span {
+      color: rgba(255,255,255,0.68);
+      font-size: 0.68rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .result-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.83rem;
+      font-weight: 800;
+    }
+
+    .schedule-strip {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 5px;
+      margin: 10px 0 12px;
+    }
+
+    .game-dot {
+      height: 18px;
+      border-radius: 4px;
+      background: #bbb2a3;
+    }
+
+    .game-dot.finals {
+      background: var(--sky);
+    }
+
+    .game-dot.ring {
+      background: linear-gradient(135deg, #fff2a8, var(--gold));
+      box-shadow: inset 0 0 0 1px rgba(18,20,25,0.12);
+    }
+
+    .game-dot.miss {
+      background: var(--red);
+    }
+
+    .leaders {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .leader {
+      padding: 8px;
+      background: #f4f0e8;
+      border: 1px solid rgba(18,20,25,0.08);
+      border-radius: var(--radius);
+    }
+
+    .leader span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.65rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .leader strong {
+      display: block;
+      margin-top: 3px;
+      font-size: 0.86rem;
+      line-height: 1.08;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      z-index: 20;
+      max-width: min(420px, calc(100vw - 28px));
+      transform: translate(-50%, 20px);
+      padding: 12px 14px;
+      color: #fff;
+      background: rgba(18,20,25,0.94);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: var(--radius);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.28);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 170ms ease, transform 170ms ease;
+      font-weight: 800;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 15;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(13, 17, 21, 0.58);
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-sheet {
+      width: min(620px, 100%);
+      padding: 16px;
+    }
+
+    .modal-sheet h2 {
+      margin-bottom: 8px;
+      font-size: 1.25rem;
+    }
+
+    .modal-sheet p {
+      color: var(--muted);
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 1120px) {
+      .topbar,
+      .game,
+      .draft-area {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        align-items: stretch;
+      }
+
+      .mode-toggle {
+        max-width: 360px;
+      }
+
+      .top-stats {
+        justify-content: flex-start;
+      }
+
+      .roster-panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .app {
+        padding: 10px;
+      }
+
+      .topbar {
+        gap: 10px;
+      }
+
+      .brand {
+        align-items: flex-start;
+      }
+
+      h1 {
+        white-space: normal;
+      }
+
+      .court-art {
+        height: 260px;
+      }
+
+      .scorebug {
+        top: 10px;
+        left: 10px;
+        right: 10px;
+      }
+
+      .player-grid,
+      .roster-grid,
+      .leaders,
+      .how-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .action-row,
+      .skip-row,
+      .season-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .mini-ledger {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .slot-card {
+        min-height: 106px;
+        padding: 11px;
+      }
+
+      .move-chip,
+      .pos-chip {
+        min-height: 32px;
+        padding: 7px 10px;
+        font-size: 0.72rem;
+      }
+
+      .player-card {
+        min-height: 170px;
+      }
+
+      .schedule-strip {
+        grid-template-columns: repeat(10, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand" aria-label="How Many Rings?">
+        <div class="ball-mark" aria-hidden="true"></div>
+        <div>
+          <h1>How Many Rings?</h1>
+          <small>10-year title window</small>
+        </div>
+      </div>
+
+      <div class="mode-toggle" aria-label="Mode">
+        <button id="classicMode" class="active" type="button">Classic</button>
+        <button id="hoopMode" type="button">HoopIQ</button>
+      </div>
+
+      <div class="top-stats" aria-label="Draft status">
+        <div class="creator-chip" aria-label="FlashDust Presents">
+          <b>FDC</b>
+          <span>FlashDust Presents</span>
+        </div>
+        <button class="audio-btn" id="audioBtn" type="button" aria-pressed="false">Audio off</button>
+        <div class="top-pill">
+          <span>Round</span>
+          <strong id="roundTop">1/6</strong>
+        </div>
+        <div class="top-pill">
+          <span>Rings</span>
+          <strong id="recordTop">--</strong>
+        </div>
+        <div class="top-pill">
+          <span>Power</span>
+          <strong id="powerTop">0</strong>
+        </div>
+      </div>
+    </header>
+
+    <main class="game">
+      <section class="stage" aria-label="Draft board">
+        <div class="court-wrap">
+          <svg class="court-art" viewBox="0 0 960 350" role="img" aria-label="Basketball court with roster markers">
+            <defs>
+              <linearGradient id="courtShade" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#f1bd78"></stop>
+                <stop offset="0.48" stop-color="#d78a43"></stop>
+                <stop offset="1" stop-color="#b85e2d"></stop>
+              </linearGradient>
+              <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#121419" flood-opacity="0.28"></feDropShadow>
+              </filter>
+            </defs>
+            <rect x="0" y="0" width="960" height="350" fill="url(#courtShade)"></rect>
+            <g fill="none" stroke="rgba(255,250,240,0.62)" stroke-width="4">
+              <rect x="22" y="22" width="916" height="306" rx="3"></rect>
+              <line x1="480" y1="22" x2="480" y2="328"></line>
+              <circle cx="480" cy="175" r="54"></circle>
+              <circle cx="146" cy="175" r="74"></circle>
+              <circle cx="814" cy="175" r="74"></circle>
+              <path d="M22 86 A136 136 0 0 1 22 264"></path>
+              <path d="M938 86 A136 136 0 0 0 938 264"></path>
+              <rect x="22" y="105" width="176" height="140"></rect>
+              <rect x="762" y="105" width="176" height="140"></rect>
+              <circle cx="198" cy="175" r="46"></circle>
+              <circle cx="762" cy="175" r="46"></circle>
+            </g>
+            <g fill="rgba(18,20,25,0.1)">
+              <rect x="0" y="0" width="960" height="350"></rect>
+            </g>
+            <g id="courtPlayers"></g>
+          </svg>
+          <div class="scorebug">
+            <div>
+              <span>Rotation</span>
+              <strong id="scoreRoster">0 / 6</strong>
+            </div>
+            <div class="live">
+              <span>Dynasty score</span>
+              <strong id="scorePower">0</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="draft-area">
+          <aside class="slot-panel" aria-label="Slot machine">
+            <div class="round-head">
+              <h2 id="roundTitle">Round 1</h2>
+              <span class="badge" id="remainingBadge">6 picks left</span>
+            </div>
+
+            <div class="reels" aria-live="polite">
+              <div class="reel">
+                <span>Franchise</span>
+                <strong id="teamReel">Ready</strong>
+              </div>
+              <div class="reel">
+                <span>Era</span>
+                <strong id="eraReel">Roll</strong>
+              </div>
+            </div>
+
+            <div class="action-row">
+              <button class="primary-btn" id="rollBtn" type="button">
+                <svg class="button-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"></path>
+                  <path d="M8 8h.01M16 8h.01M12 12h.01M8 16h.01M16 16h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path>
+                </svg>
+                Roll
+              </button>
+              <button class="secondary-btn" id="simulateBtn" type="button" disabled>
+                <svg class="button-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M8 5v14l11-7z" fill="currentColor"></path>
+                </svg>
+                Dynasty
+              </button>
+            </div>
+
+            <div class="skip-row">
+              <button class="ghost-btn" id="teamSkipBtn" type="button" disabled>
+                Team skip <span id="teamSkips">1</span>
+              </button>
+              <button class="ghost-btn" id="eraSkipBtn" type="button" disabled>
+                Era skip <span id="eraSkips">1</span>
+              </button>
+            </div>
+
+            <div class="mini-ledger">
+              <div>
+                <span>Depth</span>
+                <strong id="depthMini">0</strong>
+              </div>
+              <div>
+                <span>Balance</span>
+                <strong id="balanceMini">0</strong>
+              </div>
+              <div>
+                <span>Defense</span>
+                <strong id="defenseMini">0</strong>
+              </div>
+            </div>
+          </aside>
+
+          <section class="choices-panel" aria-label="Player choices">
+            <div class="choices-head">
+              <div>
+                <h2 id="choiceTitle">Player board</h2>
+                <p class="hint" id="choiceHint">Roll the slot to start the draft.</p>
+              </div>
+              <span class="badge" id="modeBadge">Stats visible</span>
+            </div>
+            <div id="choices" class="player-grid">
+              <div class="empty-state">No board yet.</div>
+            </div>
+          </section>
+        </div>
+
+        <section class="how-play" aria-label="How to play">
+          <h2>How to play</h2>
+          <div class="how-grid">
+            <div class="how-item">
+              <strong>Roll</strong>
+              <p>Each round gives you one random franchise and era. Pick one player from that board for your rotation.</p>
+            </div>
+            <div class="how-item">
+              <strong>Build 6</strong>
+              <p>Fill PG, SG, SF, PF, C, and 6th man. Players can only move to positions they actually fit.</p>
+            </div>
+            <div class="how-item">
+              <strong>Use skips</strong>
+              <p>You get one team skip and one era skip per draft. Weaker eras show up more often, so use them carefully.</p>
+            </div>
+            <div class="how-item">
+              <strong>Run dynasty</strong>
+              <p>After six picks, simulate 10 years. Your result is how many rings and Finals trips the team wins.</p>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <aside class="roster-panel" aria-label="Roster">
+        <div class="roster-head">
+          <h2>6-man rotation</h2>
+          <button class="danger-btn" id="resetBtn" type="button">New draft</button>
+        </div>
+        <div class="roster-grid" id="rosterGrid"></div>
+
+        <div class="meter-stack" aria-label="Team profile">
+          <div class="meter">
+            <div class="meter-label"><span>Scoring</span><strong id="ptsLabel">0</strong></div>
+            <div class="bar"><i id="ptsBar" style="--bar-color: var(--red)"></i></div>
+          </div>
+          <div class="meter">
+            <div class="meter-label"><span>Glass</span><strong id="rebLabel">0</strong></div>
+            <div class="bar"><i id="rebBar" style="--bar-color: var(--gold)"></i></div>
+          </div>
+          <div class="meter">
+            <div class="meter-label"><span>Creation</span><strong id="astLabel">0</strong></div>
+            <div class="bar"><i id="astBar" style="--bar-color: var(--sky)"></i></div>
+          </div>
+          <div class="meter">
+            <div class="meter-label"><span>Stops</span><strong id="defLabel">0</strong></div>
+            <div class="bar"><i id="defBar" style="--bar-color: var(--green)"></i></div>
+          </div>
+          <div class="meter">
+            <div class="meter-label"><span>Depth</span><strong id="depthLabel">0</strong></div>
+            <div class="bar"><i id="depthBar" style="--bar-color: var(--violet)"></i></div>
+          </div>
+        </div>
+
+        <section class="season-card hidden" id="seasonCard" aria-label="Dynasty result">
+          <h2 id="seasonTitle">Dynasty result</h2>
+          <div class="result-main">
+            <div class="record">
+              <strong id="recordLarge">0</strong>
+              <span id="seedLine">Rings</span>
+            </div>
+            <p class="result-note" id="resultNote"></p>
+          </div>
+          <div class="schedule-strip" id="scheduleStrip" aria-label="10-year dynasty strip"></div>
+          <div class="leaders" id="leaders"></div>
+          <div class="season-actions">
+            <button class="secondary-btn" id="resimBtn" type="button">Run again</button>
+            <button class="ghost-btn" id="copyBtn" type="button">Copy roster</button>
+          </div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <div class="modal" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-sheet">
+      <h2 id="modalTitle">Start a new draft?</h2>
+      <p>This clears the current roster and rolls. Your best result stays saved in this browser.</p>
+      <div class="modal-actions">
+        <button class="ghost-btn" id="cancelReset" type="button">Keep roster</button>
+        <button class="danger-btn" id="confirmReset" type="button">New draft</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const TEAMS = {
+      Lakers: { full: "Lakers", color: "#6f4fa1" },
+      Celtics: { full: "Celtics", color: "#24814a" },
+      Bulls: { full: "Bulls", color: "#c34232" },
+      Warriors: { full: "Warriors", color: "#3e78bc" },
+      Spurs: { full: "Spurs", color: "#4b535b" },
+      Heat: { full: "Heat", color: "#d45a48" },
+      Sixers: { full: "76ers", color: "#467ec2" },
+      Rockets: { full: "Rockets", color: "#bd3e37" },
+      Knicks: { full: "Knicks", color: "#e2763d" },
+      Bucks: { full: "Bucks", color: "#427348" },
+      Suns: { full: "Suns", color: "#d26d35" },
+      Pistons: { full: "Pistons", color: "#466aa7" },
+      Jazz: { full: "Jazz", color: "#375e64" },
+      Thunder: { full: "Thunder/Sonics", color: "#4f93c6" },
+      Nuggets: { full: "Nuggets", color: "#56749d" },
+      Clippers: { full: "Clippers", color: "#526cab" },
+      Blazers: { full: "Trail Blazers", color: "#be4f43" },
+      Cavaliers: { full: "Cavaliers", color: "#8e3f54" },
+      Magic: { full: "Magic", color: "#4677ba" },
+      Mavericks: { full: "Mavericks", color: "#4779ad" },
+      Hawks: { full: "Hawks", color: "#b95349" },
+      Nets: { full: "Nets", color: "#34383e" },
+      Raptors: { full: "Raptors", color: "#8a4b9b" },
+      Pelicans: { full: "Pelicans", color: "#496a86" },
+      Kings: { full: "Kings", color: "#7250a0" },
+      Timberwolves: { full: "Timberwolves", color: "#467579" },
+      Pacers: { full: "Pacers", color: "#d0a83e" },
+      Grizzlies: { full: "Grizzlies", color: "#5a78a1" }
+    };
+
+    const TEAM_SUCCESS = {
+      Lakers: 10,
+      Celtics: 10,
+      Bulls: 8.6,
+      Warriors: 8.4,
+      Spurs: 8.2,
+      Heat: 7.6,
+      Sixers: 7.2,
+      Rockets: 6.8,
+      Knicks: 6.1,
+      Bucks: 6.0,
+      Pistons: 5.8,
+      Thunder: 5.7,
+      Mavericks: 5.4,
+      Cavaliers: 5.1,
+      Blazers: 4.9,
+      Suns: 4.8,
+      Jazz: 4.7,
+      Nuggets: 4.6,
+      Hawks: 4.4,
+      Raptors: 4.2,
+      Nets: 3.8,
+      Kings: 3.6,
+      Pacers: 3.5,
+      Magic: 3.3,
+      Clippers: 3.2,
+      Timberwolves: 2.7,
+      Pelicans: 2.4,
+      Grizzlies: 2.2
+    };
+
+    const ERA_ADJUST = {
+      "1960s": { pts: 0.89, reb: 0.78, ast: 1.08, stl: 1.03, blk: 0.86 },
+      "1970s": { pts: 0.95, reb: 0.88, ast: 1.04, stl: 1.02, blk: 0.95 },
+      "1980s": { pts: 1.00, reb: 0.96, ast: 1.00, stl: 1.00, blk: 1.00 },
+      "1990s": { pts: 1.04, reb: 1.02, ast: 1.02, stl: 1.03, blk: 1.04 },
+      "2000s": { pts: 1.06, reb: 1.05, ast: 1.07, stl: 1.04, blk: 1.06 },
+      "2010s": { pts: 1.02, reb: 1.00, ast: 1.06, stl: 1.03, blk: 1.03 },
+      "2020s": { pts: 0.98, reb: 0.98, ast: 1.02, stl: 1.00, blk: 1.00 }
+    };
+
+    const PLAYERS = [
+      p("Jerry West", "Lakers", "1960s", "1965-66", "G", 31.3, 7.1, 6.1, 2.7, 0.7, ["shotmaker", "point guard"]),
+      p("Elgin Baylor", "Lakers", "1960s", "1961-62", "W", 38.3, 18.6, 4.6, 1.4, 0.8, ["volume", "glass"]),
+      p("Bill Russell", "Celtics", "1960s", "1961-62", "B", 18.9, 23.6, 4.5, 1.5, 4.8, ["rim wall", "winner"]),
+      p("John Havlicek", "Celtics", "1960s", "1968-69", "W", 21.6, 7.0, 5.4, 1.7, 0.6, ["engine", "defense"]),
+      p("Wilt Chamberlain", "Warriors", "1960s", "1961-62", "B", 50.4, 25.7, 2.4, 1.8, 5.2, ["paint force", "glass"]),
+      p("Rick Barry", "Warriors", "1960s", "1966-67", "W", 35.6, 9.2, 3.6, 2.0, 0.7, ["scorer", "wing"]),
+      p("Wilt Chamberlain", "Sixers", "1960s", "1967-68", "B", 24.3, 23.8, 8.6, 1.6, 4.7, ["hub", "rim wall"]),
+      p("Hal Greer", "Sixers", "1960s", "1967-68", "G", 24.1, 5.4, 4.5, 1.7, 0.2, ["guard", "touch"]),
+      p("Walt Frazier", "Knicks", "1960s", "1969-70", "G", 20.9, 6.0, 8.2, 2.2, 0.3, ["point guard", "defense"]),
+      p("Willis Reed", "Knicks", "1960s", "1969-70", "B", 21.7, 13.9, 2.0, 1.1, 1.7, ["big", "physical"]),
+      p("Bob Pettit", "Hawks", "1960s", "1961-62", "B", 31.1, 18.7, 3.7, 1.1, 1.0, ["inside-out", "glass"]),
+      p("Oscar Robertson", "Kings", "1960s", "1961-62", "G", 30.8, 12.5, 11.4, 1.8, 0.5, ["triple double", "creator"]),
+      p("Kareem Abdul-Jabbar", "Bucks", "1970s", "1971-72", "B", 34.8, 16.6, 4.6, 1.2, 4.6, ["skyhook", "rim wall"]),
+      p("Oscar Robertson", "Bucks", "1970s", "1970-71", "G", 19.4, 5.7, 8.2, 1.4, 0.2, ["table setter", "poise"]),
+      p("Kareem Abdul-Jabbar", "Lakers", "1970s", "1976-77", "B", 26.2, 13.3, 3.9, 1.2, 3.2, ["anchor", "touch"]),
+      p("Gail Goodrich", "Lakers", "1970s", "1973-74", "G", 25.3, 3.0, 5.2, 1.5, 0.2, ["scorer", "guard"]),
+      p("Julius Erving", "Sixers", "1970s", "1979-80", "W", 26.9, 7.4, 4.6, 2.2, 1.8, ["wing", "transition"]),
+      p("George McGinnis", "Sixers", "1970s", "1976-77", "W", 21.4, 11.5, 3.8, 1.9, 0.5, ["power wing", "glass"]),
+      p("Bob McAdoo", "Clippers", "1970s", "1974-75", "B", 34.5, 14.1, 2.2, 1.1, 2.1, ["scoring big", "glass"]),
+      p("Dave Cowens", "Celtics", "1970s", "1973-74", "B", 19.0, 15.7, 4.4, 1.2, 1.3, ["motor", "anchor"]),
+      p("Walt Frazier", "Knicks", "1970s", "1971-72", "G", 23.2, 6.7, 5.8, 2.0, 0.3, ["defense", "guard"]),
+      p("Rick Barry", "Warriors", "1970s", "1974-75", "W", 30.6, 5.7, 6.2, 2.9, 0.4, ["wing", "steals"]),
+      p("Moses Malone", "Rockets", "1970s", "1978-79", "B", 24.8, 17.6, 1.8, 1.0, 1.5, ["boards", "paint"]),
+      p("George Gervin", "Spurs", "1970s", "1979-80", "G", 33.1, 5.2, 2.6, 1.4, 1.0, ["bucket", "wing"]),
+      p("Paul Westphal", "Suns", "1970s", "1978-79", "G", 24.0, 2.0, 6.5, 1.4, 0.4, ["guard", "touch"]),
+      p("Magic Johnson", "Lakers", "1980s", "1986-87", "G", 23.9, 6.3, 12.2, 1.7, 0.5, ["creator", "pace"]),
+      p("Kareem Abdul-Jabbar", "Lakers", "1980s", "1980-81", "B", 26.2, 10.3, 3.4, 0.7, 2.9, ["post", "anchor"]),
+      p("Larry Bird", "Celtics", "1980s", "1984-85", "W", 28.7, 10.5, 6.6, 1.6, 1.2, ["shotmaker", "hub"]),
+      p("Kevin McHale", "Celtics", "1980s", "1986-87", "B", 26.1, 9.9, 2.6, 0.5, 2.2, ["post", "rim"]),
+      p("Michael Jordan", "Bulls", "1980s", "1988-89", "G", 32.5, 8.0, 8.0, 2.9, 0.8, ["two-way", "volume"]),
+      p("Scottie Pippen", "Bulls", "1980s", "1989-90", "W", 16.5, 6.7, 5.4, 2.6, 1.2, ["defense", "connector"]),
+      p("Isiah Thomas", "Pistons", "1980s", "1984-85", "G", 21.2, 4.5, 13.9, 2.3, 0.3, ["point guard", "pressure"]),
+      p("Dennis Rodman", "Pistons", "1980s", "1989-90", "W", 8.8, 9.7, 0.9, 0.6, 0.7, ["defense", "glass"]),
+      p("Moses Malone", "Sixers", "1980s", "1982-83", "B", 24.5, 15.3, 1.3, 1.1, 2.0, ["paint", "boards"]),
+      p("Charles Barkley", "Sixers", "1980s", "1987-88", "B", 28.3, 11.9, 3.2, 1.3, 1.3, ["force", "transition"]),
+      p("Hakeem Olajuwon", "Rockets", "1980s", "1988-89", "B", 24.8, 13.5, 1.8, 2.6, 3.4, ["rim wall", "hands"]),
+      p("Dominique Wilkins", "Hawks", "1980s", "1985-86", "W", 30.3, 7.9, 2.6, 1.8, 0.6, ["wing", "scorer"]),
+      p("Alex English", "Nuggets", "1980s", "1982-83", "W", 28.4, 7.3, 4.8, 1.4, 1.5, ["touch", "wing"]),
+      p("Karl Malone", "Jazz", "1980s", "1989-90", "B", 31.0, 11.1, 2.8, 1.5, 0.6, ["power", "rim run"]),
+      p("John Stockton", "Jazz", "1980s", "1989-90", "G", 17.2, 2.6, 14.5, 2.7, 0.2, ["point guard", "steals"]),
+      p("Michael Jordan", "Bulls", "1990s", "1990-91", "G", 31.5, 6.0, 5.5, 2.7, 1.0, ["closer", "defense"]),
+      p("Scottie Pippen", "Bulls", "1990s", "1993-94", "W", 22.0, 8.7, 5.6, 2.9, 0.8, ["connector", "defense"]),
+      p("Hakeem Olajuwon", "Rockets", "1990s", "1993-94", "B", 27.3, 11.9, 3.6, 1.6, 3.7, ["anchor", "post"]),
+      p("Clyde Drexler", "Rockets", "1990s", "1995-96", "W", 19.3, 7.2, 5.8, 2.0, 0.5, ["transition", "wing"]),
+      p("Shaquille O'Neal", "Magic", "1990s", "1994-95", "B", 29.3, 11.4, 2.7, 0.9, 2.4, ["paint force", "rim"]),
+      p("Penny Hardaway", "Magic", "1990s", "1995-96", "G", 21.7, 4.3, 7.1, 2.0, 0.5, ["big guard", "creator"]),
+      p("David Robinson", "Spurs", "1990s", "1993-94", "B", 29.8, 10.7, 4.8, 1.7, 3.3, ["anchor", "runner"]),
+      p("Tim Duncan", "Spurs", "1990s", "1998-99", "B", 21.7, 11.4, 2.4, 0.9, 2.5, ["fundamental", "rim"]),
+      p("Karl Malone", "Jazz", "1990s", "1996-97", "B", 27.4, 9.9, 4.5, 1.4, 0.6, ["power", "durable"]),
+      p("John Stockton", "Jazz", "1990s", "1990-91", "G", 17.2, 2.9, 14.2, 2.9, 0.2, ["creator", "steals"]),
+      p("Patrick Ewing", "Knicks", "1990s", "1989-90", "B", 28.6, 10.9, 2.2, 1.0, 4.0, ["rim wall", "post"]),
+      p("Charles Barkley", "Suns", "1990s", "1992-93", "B", 25.6, 12.2, 5.1, 1.6, 1.0, ["force", "hub"]),
+      p("Gary Payton", "Thunder", "1990s", "1995-96", "G", 19.3, 4.2, 7.5, 2.9, 0.2, ["pressure", "guard"]),
+      p("Shawn Kemp", "Thunder", "1990s", "1995-96", "B", 19.6, 11.4, 2.2, 1.2, 1.6, ["vertical", "glass"]),
+      p("Shaquille O'Neal", "Lakers", "1990s", "1999-00", "B", 29.7, 13.6, 3.8, 0.5, 3.0, ["paint force", "anchor"]),
+      p("Kobe Bryant", "Lakers", "1990s", "1999-00", "G", 22.5, 6.3, 4.9, 1.6, 0.9, ["shotmaker", "defense"]),
+      p("Alonzo Mourning", "Heat", "1990s", "1998-99", "B", 20.1, 11.0, 1.6, 0.7, 3.9, ["rim wall", "glass"]),
+      p("Kobe Bryant", "Lakers", "2000s", "2005-06", "G", 35.4, 5.3, 4.5, 1.8, 0.4, ["closer", "volume"]),
+      p("Shaquille O'Neal", "Lakers", "2000s", "2000-01", "B", 28.7, 12.7, 3.7, 0.6, 2.8, ["paint force", "rim"]),
+      p("Tim Duncan", "Spurs", "2000s", "2002-03", "B", 23.3, 12.9, 3.9, 0.7, 2.9, ["anchor", "hub"]),
+      p("Manu Ginobili", "Spurs", "2000s", "2007-08", "G", 19.5, 4.8, 4.5, 1.5, 0.4, ["sixth man", "creator"]),
+      p("Dwyane Wade", "Heat", "2000s", "2008-09", "G", 30.2, 5.0, 7.5, 2.2, 1.3, ["rim pressure", "blocks"]),
+      p("LeBron James", "Cavaliers", "2000s", "2008-09", "W", 28.4, 7.6, 7.2, 1.7, 1.1, ["engine", "two-way"]),
+      p("Dirk Nowitzki", "Mavericks", "2000s", "2005-06", "B", 26.6, 9.0, 2.8, 0.7, 1.0, ["stretch big", "touch"]),
+      p("Steve Nash", "Suns", "2000s", "2006-07", "G", 18.6, 3.5, 11.6, 0.8, 0.1, ["creator", "spacing"]),
+      p("Kevin Garnett", "Celtics", "2000s", "2007-08", "B", 18.8, 9.2, 3.4, 1.4, 1.3, ["defense", "connector"]),
+      p("Paul Pierce", "Celtics", "2000s", "2005-06", "W", 26.8, 6.7, 4.7, 1.4, 0.4, ["wing", "closer"]),
+      p("Tracy McGrady", "Rockets", "2000s", "2004-05", "W", 25.7, 6.2, 5.7, 1.7, 0.7, ["shotmaker", "wing"]),
+      p("Yao Ming", "Rockets", "2000s", "2006-07", "B", 25.0, 9.4, 2.0, 0.4, 2.0, ["post", "rim"]),
+      p("Dwight Howard", "Magic", "2000s", "2008-09", "B", 20.6, 13.8, 1.4, 1.0, 2.9, ["rim wall", "lob"]),
+      p("Allen Iverson", "Sixers", "2000s", "2001-02", "G", 31.4, 4.5, 5.5, 2.8, 0.2, ["pressure", "steals"]),
+      p("Jason Kidd", "Nets", "2000s", "2002-03", "G", 18.7, 6.3, 8.9, 2.2, 0.3, ["point guard", "glass"]),
+      p("Chauncey Billups", "Pistons", "2000s", "2005-06", "G", 18.5, 3.1, 8.6, 0.9, 0.1, ["control", "spacing"]),
+      p("Stephen Curry", "Warriors", "2010s", "2015-16", "G", 30.1, 5.4, 6.7, 2.1, 0.2, ["spacing", "gravity"]),
+      p("Kevin Durant", "Warriors", "2010s", "2016-17", "W", 25.1, 8.3, 4.8, 1.1, 1.6, ["wing", "rim help"]),
+      p("LeBron James", "Cavaliers", "2010s", "2017-18", "W", 27.5, 8.6, 9.1, 1.4, 0.9, ["engine", "creator"]),
+      p("Kyrie Irving", "Cavaliers", "2010s", "2016-17", "G", 25.2, 3.2, 5.8, 1.2, 0.3, ["handle", "closer"]),
+      p("LeBron James", "Heat", "2010s", "2012-13", "W", 26.8, 8.0, 7.3, 1.7, 0.9, ["two-way", "force"]),
+      p("Dwyane Wade", "Heat", "2010s", "2010-11", "G", 25.5, 6.4, 4.6, 1.5, 1.1, ["rim pressure", "guard"]),
+      p("Kevin Durant", "Thunder", "2010s", "2013-14", "W", 32.0, 7.4, 5.5, 1.3, 0.7, ["scorer", "wing"]),
+      p("Russell Westbrook", "Thunder", "2010s", "2016-17", "G", 31.6, 10.7, 10.4, 1.6, 0.4, ["triple double", "pace"]),
+      p("Kawhi Leonard", "Spurs", "2010s", "2016-17", "W", 25.5, 5.8, 3.5, 1.8, 0.7, ["lockdown", "closer"]),
+      p("James Harden", "Rockets", "2010s", "2018-19", "G", 36.1, 6.6, 7.5, 2.0, 0.7, ["volume", "creator"]),
+      p("Chris Paul", "Clippers", "2010s", "2014-15", "G", 19.1, 4.6, 10.2, 1.9, 0.2, ["point guard", "control"]),
+      p("Blake Griffin", "Clippers", "2010s", "2013-14", "B", 24.1, 9.5, 3.9, 1.2, 0.6, ["power", "hub"]),
+      p("Giannis Antetokounmpo", "Bucks", "2010s", "2018-19", "B", 27.7, 12.5, 5.9, 1.3, 1.5, ["force", "rim"]),
+      p("Kawhi Leonard", "Raptors", "2010s", "2018-19", "W", 26.6, 7.3, 3.3, 1.8, 0.4, ["closer", "defense"]),
+      p("Anthony Davis", "Pelicans", "2010s", "2017-18", "B", 28.1, 11.1, 2.3, 1.5, 2.6, ["rim wall", "lob"]),
+      p("Damian Lillard", "Blazers", "2010s", "2019-20", "G", 30.0, 4.3, 8.0, 1.1, 0.3, ["range", "creator"]),
+      p("Nikola Jokic", "Nuggets", "2010s", "2018-19", "B", 20.1, 10.8, 7.3, 1.4, 0.7, ["hub", "touch"]),
+      p("Nikola Jokic", "Nuggets", "2020s", "2023-24", "B", 26.4, 12.4, 9.0, 1.4, 0.9, ["hub", "glass"]),
+      p("Jamal Murray", "Nuggets", "2020s", "2022-23", "G", 20.0, 4.0, 6.2, 1.0, 0.2, ["shotmaker", "guard"]),
+      p("Giannis Antetokounmpo", "Bucks", "2020s", "2022-23", "B", 31.1, 11.8, 5.7, 0.8, 0.8, ["force", "rim"]),
+      p("Damian Lillard", "Bucks", "2020s", "2023-24", "G", 24.3, 4.4, 7.0, 1.0, 0.2, ["range", "creator"]),
+      p("Luka Doncic", "Mavericks", "2020s", "2023-24", "G", 33.9, 9.2, 9.8, 1.4, 0.5, ["engine", "pace"]),
+      p("Kyrie Irving", "Mavericks", "2020s", "2023-24", "G", 25.6, 5.0, 5.2, 1.3, 0.5, ["handle", "closer"]),
+      p("LeBron James", "Lakers", "2020s", "2021-22", "W", 30.3, 8.2, 6.2, 1.3, 1.1, ["engine", "force"]),
+      p("Anthony Davis", "Lakers", "2020s", "2023-24", "B", 24.7, 12.6, 3.5, 1.2, 2.3, ["rim wall", "glass"]),
+      p("Stephen Curry", "Warriors", "2020s", "2020-21", "G", 32.0, 5.5, 5.8, 1.2, 0.1, ["gravity", "range"]),
+      p("Draymond Green", "Warriors", "2020s", "2020-21", "W", 7.0, 7.1, 8.9, 1.7, 0.8, ["connector", "defense"]),
+      p("Joel Embiid", "Sixers", "2020s", "2022-23", "B", 33.1, 10.2, 4.2, 1.0, 1.7, ["post", "rim"]),
+      p("James Harden", "Sixers", "2020s", "2022-23", "G", 21.0, 6.1, 10.7, 1.2, 0.5, ["creator", "spacing"]),
+      p("Jayson Tatum", "Celtics", "2020s", "2022-23", "W", 30.1, 8.8, 4.6, 1.1, 0.7, ["wing", "scorer"]),
+      p("Jaylen Brown", "Celtics", "2020s", "2022-23", "W", 26.6, 6.9, 3.5, 1.1, 0.4, ["slasher", "wing"]),
+      p("Shai Gilgeous-Alexander", "Thunder", "2020s", "2023-24", "G", 30.1, 5.5, 6.2, 2.0, 0.9, ["pressure", "steals"]),
+      p("Devin Booker", "Suns", "2020s", "2022-23", "G", 27.8, 4.5, 5.5, 1.0, 0.3, ["shotmaker", "creator"]),
+      p("Kevin Durant", "Suns", "2020s", "2023-24", "W", 27.1, 6.6, 5.0, 0.9, 1.2, ["wing", "rim help"]),
+      p("Jimmy Butler", "Heat", "2020s", "2022-23", "W", 22.9, 5.9, 5.3, 1.8, 0.3, ["closer", "defense"]),
+      p("Ja Morant", "Grizzlies", "2020s", "2021-22", "G", 27.4, 5.7, 6.7, 1.2, 0.4, ["rim pressure", "pace"]),
+      p("Jaren Jackson Jr.", "Grizzlies", "2020s", "2022-23", "B", 18.6, 6.8, 1.0, 1.0, 3.0, ["rim wall", "stretch"]),
+      p("Desmond Bane", "Grizzlies", "2020s", "2022-23", "G", 21.5, 5.0, 4.4, 1.0, 0.4, ["shooter", "guard"]),
+      p("Dillon Brooks", "Grizzlies", "2020s", "2021-22", "W", 18.4, 3.2, 2.8, 1.1, 0.3, ["wing", "defense"]),
+      p("Steven Adams", "Grizzlies", "2020s", "2021-22", "B", 6.9, 10.0, 3.4, 0.9, 0.8, ["screen", "glass"]),
+      p("De'Aaron Fox", "Kings", "2020s", "2022-23", "G", 25.0, 4.2, 6.1, 1.1, 0.3, ["speed", "closer"]),
+      p("Domantas Sabonis", "Kings", "2020s", "2022-23", "B", 19.1, 12.3, 7.3, 0.8, 0.5, ["hub", "glass"]),
+      p("Anthony Edwards", "Timberwolves", "2020s", "2023-24", "G", 25.9, 5.4, 5.1, 1.3, 0.5, ["slasher", "defense"]),
+      p("Tyrese Haliburton", "Pacers", "2020s", "2023-24", "G", 20.1, 3.9, 10.9, 1.2, 0.7, ["creator", "pace"])
+    ];
+
+    PLAYERS.push(
+      p("Klay Thompson", "Warriors", "2020s", "2021-22", "G", 20.4, 3.9, 2.8, 0.5, 0.5, ["shooter", "spacing"]),
+      p("Andrew Wiggins", "Warriors", "2020s", "2021-22", "W", 17.2, 4.5, 2.2, 1.0, 0.7, ["wing", "defense"]),
+      p("Jordan Poole", "Warriors", "2020s", "2021-22", "G", 18.5, 3.4, 4.0, 0.8, 0.3, ["guard", "spark"]),
+      p("Kevon Looney", "Warriors", "2020s", "2021-22", "B", 6.0, 7.3, 2.0, 0.6, 0.6, ["glass", "screen"]),
+      p("Klay Thompson", "Warriors", "2010s", "2015-16", "G", 22.1, 3.8, 2.1, 0.8, 0.6, ["shooter", "defense"]),
+      p("Draymond Green", "Warriors", "2010s", "2015-16", "W", 14.0, 9.5, 7.4, 1.5, 1.4, ["connector", "defense"]),
+      p("Andre Iguodala", "Warriors", "2010s", "2015-16", "W", 7.0, 4.0, 3.4, 1.1, 0.3, ["wing", "defense"]),
+      p("Shaun Livingston", "Warriors", "2010s", "2015-16", "G", 6.3, 2.2, 3.0, 0.7, 0.3, ["guard", "bench"]),
+
+      p("Marc Gasol", "Grizzlies", "2010s", "2012-13", "B", 14.1, 7.8, 4.0, 1.0, 1.7, ["anchor", "hub"]),
+      p("Zach Randolph", "Grizzlies", "2010s", "2010-11", "B", 20.1, 12.2, 2.2, 0.8, 0.3, ["post", "glass"]),
+      p("Mike Conley", "Grizzlies", "2010s", "2016-17", "G", 20.5, 3.5, 6.3, 1.3, 0.3, ["guard", "control"]),
+      p("Tony Allen", "Grizzlies", "2010s", "2012-13", "W", 8.9, 4.6, 1.2, 1.5, 0.6, ["defense", "wing"]),
+      p("Rudy Gay", "Grizzlies", "2010s", "2010-11", "W", 19.8, 6.2, 2.8, 1.7, 1.1, ["wing", "scorer"]),
+
+      p("Pau Gasol", "Grizzlies", "2000s", "2005-06", "B", 20.4, 8.9, 4.6, 0.6, 1.9, ["post", "touch"]),
+      p("Mike Miller", "Grizzlies", "2000s", "2006-07", "W", 18.5, 5.4, 4.3, 0.8, 0.3, ["shooter", "wing"]),
+      p("Shane Battier", "Grizzlies", "2000s", "2005-06", "W", 10.1, 5.3, 1.7, 1.1, 1.4, ["defense", "connector"]),
+      p("Jason Williams", "Grizzlies", "2000s", "2001-02", "G", 14.8, 3.0, 8.0, 1.7, 0.1, ["handle", "creator"]),
+      p("Shareef Abdur-Rahim", "Grizzlies", "2000s", "2000-01", "B", 20.5, 9.1, 3.1, 1.1, 1.0, ["forward", "scorer"]),
+
+      p("Russell Westbrook", "Lakers", "2020s", "2021-22", "G", 18.5, 7.4, 7.1, 1.0, 0.3, ["pace", "guard"]),
+      p("Austin Reaves", "Lakers", "2020s", "2023-24", "G", 15.9, 4.3, 5.5, 0.8, 0.3, ["connector", "guard"]),
+      p("D'Angelo Russell", "Lakers", "2020s", "2023-24", "G", 18.0, 3.1, 6.3, 0.9, 0.5, ["creator", "range"]),
+      p("Rui Hachimura", "Lakers", "2020s", "2023-24", "W", 13.6, 4.3, 1.2, 0.6, 0.4, ["forward", "touch"]),
+      p("Pau Gasol", "Lakers", "2000s", "2008-09", "B", 18.9, 9.6, 3.5, 0.6, 1.0, ["post", "hub"]),
+      p("Lamar Odom", "Lakers", "2000s", "2008-09", "W", 11.3, 8.2, 2.6, 1.0, 1.3, ["connector", "glass"]),
+      p("Derek Fisher", "Lakers", "2000s", "2008-09", "G", 9.9, 2.3, 3.2, 1.2, 0.1, ["guard", "spacing"]),
+      p("Trevor Ariza", "Lakers", "2000s", "2008-09", "W", 8.9, 4.3, 1.8, 1.7, 0.3, ["wing", "defense"]),
+      p("James Worthy", "Lakers", "1980s", "1986-87", "W", 19.4, 5.7, 2.8, 1.3, 1.0, ["wing", "transition"]),
+      p("Byron Scott", "Lakers", "1980s", "1987-88", "G", 21.7, 4.1, 4.1, 1.9, 0.3, ["guard", "shooter"]),
+      p("Michael Cooper", "Lakers", "1980s", "1986-87", "G", 10.5, 3.1, 4.5, 1.0, 0.5, ["defense", "connector"]),
+      p("A.C. Green", "Lakers", "1980s", "1988-89", "B", 13.3, 9.0, 1.3, 1.1, 0.7, ["glass", "energy"]),
+
+      p("Marcus Smart", "Celtics", "2020s", "2021-22", "G", 12.1, 3.8, 5.9, 1.7, 0.3, ["defense", "guard"]),
+      p("Al Horford", "Celtics", "2020s", "2021-22", "B", 10.2, 7.7, 3.4, 0.7, 1.3, ["big", "connector"]),
+      p("Derrick White", "Celtics", "2020s", "2023-24", "G", 15.2, 4.2, 5.2, 1.0, 1.2, ["guard", "defense"]),
+      p("Kristaps Porzingis", "Celtics", "2020s", "2023-24", "B", 20.1, 7.2, 2.0, 0.7, 1.9, ["stretch big", "rim"]),
+      p("Robert Parish", "Celtics", "1980s", "1981-82", "B", 19.9, 10.8, 1.8, 0.9, 2.4, ["center", "rim"]),
+      p("Dennis Johnson", "Celtics", "1980s", "1984-85", "G", 15.7, 4.0, 6.8, 1.2, 0.4, ["guard", "defense"]),
+      p("Danny Ainge", "Celtics", "1980s", "1987-88", "G", 15.7, 3.1, 6.2, 1.4, 0.1, ["guard", "spacing"]),
+      p("Cedric Maxwell", "Celtics", "1980s", "1980-81", "W", 15.2, 6.5, 2.7, 1.0, 0.8, ["wing", "touch"]),
+
+      p("Serge Ibaka", "Thunder", "2010s", "2011-12", "B", 9.1, 7.5, 0.4, 0.5, 3.7, ["rim", "defense"]),
+      p("James Harden", "Thunder", "2010s", "2011-12", "G", 16.8, 4.1, 3.7, 1.0, 0.2, ["sixth man", "creator"]),
+      p("Steven Adams", "Thunder", "2010s", "2015-16", "B", 8.0, 6.7, 0.8, 0.5, 1.1, ["screen", "glass"]),
+      p("Andre Roberson", "Thunder", "2010s", "2016-17", "W", 6.6, 5.1, 1.0, 1.2, 1.0, ["defense", "wing"]),
+      p("Josh Giddey", "Thunder", "2020s", "2022-23", "G", 16.6, 7.9, 6.2, 0.8, 0.4, ["creator", "glass"]),
+      p("Chet Holmgren", "Thunder", "2020s", "2023-24", "B", 16.5, 7.9, 2.4, 0.6, 2.3, ["rim", "stretch"]),
+      p("Jalen Williams", "Thunder", "2020s", "2023-24", "W", 19.1, 4.0, 4.5, 1.1, 0.6, ["wing", "creator"]),
+      p("Lu Dort", "Thunder", "2020s", "2023-24", "W", 10.9, 3.6, 1.4, 0.9, 0.6, ["defense", "wing"]),
+
+      p("Aaron Gordon", "Nuggets", "2020s", "2022-23", "W", 16.3, 6.6, 3.0, 0.8, 0.8, ["forward", "finish"]),
+      p("Michael Porter Jr.", "Nuggets", "2020s", "2022-23", "W", 17.4, 5.5, 1.0, 0.6, 0.5, ["shooter", "wing"]),
+      p("Kentavious Caldwell-Pope", "Nuggets", "2020s", "2022-23", "G", 10.8, 2.7, 2.4, 1.5, 0.5, ["guard", "defense"]),
+      p("Bruce Brown", "Nuggets", "2020s", "2022-23", "G", 11.5, 4.1, 3.4, 1.1, 0.6, ["connector", "bench"]),
+
+      p("Shane Battier", "Rockets", "2000s", "2006-07", "W", 10.1, 4.1, 2.1, 1.0, 0.7, ["defense", "wing"]),
+      p("Rafer Alston", "Rockets", "2000s", "2006-07", "G", 13.3, 3.4, 5.4, 1.6, 0.1, ["guard", "creator"]),
+      p("Luis Scola", "Rockets", "2000s", "2008-09", "B", 12.7, 8.8, 1.5, 0.8, 0.1, ["post", "glass"]),
+      p("Steve Francis", "Rockets", "2000s", "2001-02", "G", 21.6, 7.0, 6.4, 1.2, 0.4, ["guard", "pressure"]),
+      p("Robert Horry", "Rockets", "1990s", "1994-95", "W", 10.2, 5.1, 3.4, 1.5, 1.2, ["connector", "clutch"]),
+      p("Kenny Smith", "Rockets", "1990s", "1994-95", "G", 10.4, 1.9, 4.0, 0.9, 0.1, ["guard", "spacing"]),
+      p("Sam Cassell", "Rockets", "1990s", "1994-95", "G", 9.5, 2.6, 4.9, 0.9, 0.1, ["guard", "bench"]),
+      p("Mario Elie", "Rockets", "1990s", "1994-95", "W", 8.8, 2.4, 2.3, 0.9, 0.1, ["wing", "defense"]),
+
+      p("Mikal Bridges", "Suns", "2020s", "2021-22", "W", 14.2, 4.2, 2.3, 1.2, 0.4, ["wing", "defense"]),
+      p("Chris Paul", "Suns", "2020s", "2020-21", "G", 16.4, 4.5, 8.9, 1.4, 0.3, ["point guard", "control"]),
+      p("Deandre Ayton", "Suns", "2020s", "2020-21", "B", 14.4, 10.5, 1.4, 0.6, 1.2, ["center", "glass"]),
+      p("Jae Crowder", "Suns", "2020s", "2020-21", "W", 10.1, 4.7, 2.1, 0.8, 0.5, ["wing", "defense"]),
+
+      p("Chet Walker", "Sixers", "1960s", "1966-67", "W", 19.3, 8.1, 2.3, 1.1, 0.5, ["wing", "touch"]),
+      p("Billy Cunningham", "Sixers", "1960s", "1966-67", "W", 18.5, 7.3, 2.5, 1.0, 0.5, ["forward", "glass"]),
+      p("Luke Jackson", "Sixers", "1960s", "1966-67", "B", 12.0, 8.9, 1.2, 0.8, 0.9, ["big", "glass"]),
+      p("Wali Jones", "Sixers", "1960s", "1966-67", "G", 13.2, 2.8, 3.5, 1.0, 0.2, ["guard", "speed"]),
+      p("Andre Iguodala", "Sixers", "2000s", "2007-08", "W", 19.9, 5.4, 4.8, 2.1, 0.6, ["wing", "defense"]),
+      p("Kyle Korver", "Sixers", "2000s", "2004-05", "W", 11.5, 4.6, 2.2, 1.3, 0.4, ["shooter", "wing"]),
+      p("Samuel Dalembert", "Sixers", "2000s", "2007-08", "B", 10.5, 10.4, 0.5, 0.5, 2.3, ["rim", "glass"]),
+      p("Andre Miller", "Sixers", "2000s", "2007-08", "G", 17.0, 4.0, 6.9, 1.3, 0.1, ["guard", "creator"])
+    );
+
+    const ROSTER_SIZE = 6;
+    const POSITIONS = ["PG", "SG", "SF", "PF", "C", "6th"];
+    const STARTER_POSITIONS = POSITIONS.slice(0, 5);
+    const SLOT_WEIGHTS = [1, 0.97, 0.94, 0.9, 0.86, 0.62];
+    const CHOICE_COUNT = 6;
+    const MIN_ROLL_CHOICES = 4;
+    const POSITION_OVERRIDES = {
+      "LeBron James": ["PG", "SG", "SF", "PF", "C"],
+      "Magic Johnson": ["PG", "SG", "SF", "PF"],
+      "Oscar Robertson": ["PG", "SG"],
+      "Luka Doncic": ["PG", "SG", "SF"],
+      "James Harden": ["PG", "SG"],
+      "Russell Westbrook": ["PG", "SG"],
+      "Penny Hardaway": ["PG", "SG", "SF"],
+      "Jerry West": ["PG", "SG"],
+      "Walt Frazier": ["PG", "SG"],
+      "John Stockton": ["PG"],
+      "Chris Paul": ["PG"],
+      "Steve Nash": ["PG"],
+      "Jason Kidd": ["PG"],
+      "Isiah Thomas": ["PG"],
+      "Chauncey Billups": ["PG", "SG"],
+      "Tyrese Haliburton": ["PG", "SG"],
+      "Stephen Curry": ["PG", "SG"],
+      "Damian Lillard": ["PG", "SG"],
+      "Kyrie Irving": ["PG", "SG"],
+      "Ja Morant": ["PG"],
+      "De'Aaron Fox": ["PG"],
+      "Michael Jordan": ["SG", "SF"],
+      "Kobe Bryant": ["SG", "SF"],
+      "Dwyane Wade": ["SG", "PG"],
+      "Allen Iverson": ["PG", "SG"],
+      "George Gervin": ["SG", "SF"],
+      "Paul Westphal": ["PG", "SG"],
+      "Shai Gilgeous-Alexander": ["PG", "SG"],
+      "Devin Booker": ["SG", "PG"],
+      "Anthony Edwards": ["SG", "SF"],
+      "Larry Bird": ["SF", "PF"],
+      "Kevin Durant": ["SF", "PF"],
+      "Julius Erving": ["SF", "SG"],
+      "Scottie Pippen": ["SF", "SG", "PF"],
+      "Kawhi Leonard": ["SF", "SG", "PF"],
+      "Jimmy Butler": ["SF", "SG", "PF"],
+      "Paul Pierce": ["SF", "SG"],
+      "Tracy McGrady": ["SG", "SF"],
+      "Clyde Drexler": ["SG", "SF"],
+      "Dominique Wilkins": ["SF", "PF"],
+      "Alex English": ["SF"],
+      "Rick Barry": ["SF", "SG"],
+      "John Havlicek": ["SF", "SG"],
+      "Elgin Baylor": ["SF", "PF"],
+      "Jaylen Brown": ["SG", "SF"],
+      "Jayson Tatum": ["SF", "PF"],
+      "Giannis Antetokounmpo": ["SF", "PF", "C"],
+      "Anthony Davis": ["PF", "C"],
+      "Tim Duncan": ["PF", "C"],
+      "Kevin Garnett": ["PF", "C"],
+      "Dirk Nowitzki": ["PF", "C"],
+      "Karl Malone": ["PF"],
+      "Charles Barkley": ["PF", "SF"],
+      "Bob Pettit": ["PF", "C"],
+      "Blake Griffin": ["PF", "C"],
+      "Dennis Rodman": ["PF", "SF"],
+      "Kevin McHale": ["PF", "C"],
+      "Draymond Green": ["PF", "C", "SF"],
+      "Domantas Sabonis": ["C", "PF"],
+      "Nikola Jokic": ["C", "PF"],
+      "Kareem Abdul-Jabbar": ["C"],
+      "Wilt Chamberlain": ["C"],
+      "Bill Russell": ["C"],
+      "Shaquille O'Neal": ["C"],
+      "Hakeem Olajuwon": ["C"],
+      "Moses Malone": ["C"],
+      "Patrick Ewing": ["C"],
+      "David Robinson": ["C"],
+      "Yao Ming": ["C"],
+      "Dwight Howard": ["C"],
+      "Alonzo Mourning": ["C"],
+      "Joel Embiid": ["C"],
+      "Willis Reed": ["C", "PF"],
+      "Bob McAdoo": ["C", "PF"],
+      "Dave Cowens": ["C", "PF"],
+      "Shawn Kemp": ["PF", "C"],
+      "Manu Ginobili": ["SG", "PG"],
+      "Gail Goodrich": ["SG", "PG"],
+      "Hal Greer": ["SG", "PG"],
+      "Jamal Murray": ["PG", "SG"]
+    };
+    const HALL_OF_FAME_LEVEL_NAMES = new Set([
+      "Kareem Abdul-Jabbar", "Larry Bird", "Magic Johnson", "Michael Jordan", "Scottie Pippen",
+      "Hakeem Olajuwon", "Shaquille O'Neal", "Kobe Bryant", "Tim Duncan", "Kevin Garnett",
+      "Dirk Nowitzki", "LeBron James", "Dwyane Wade", "Stephen Curry", "Kevin Durant",
+      "James Harden", "Chris Paul", "Russell Westbrook", "Giannis Antetokounmpo", "Nikola Jokic",
+      "Joel Embiid", "Luka Doncic", "Jayson Tatum", "Anthony Davis", "Kawhi Leonard",
+      "Wilt Chamberlain", "Bill Russell", "Jerry West", "Oscar Robertson", "Elgin Baylor",
+      "Julius Erving", "Moses Malone", "Karl Malone", "Charles Barkley", "David Robinson",
+      "Patrick Ewing", "Allen Iverson", "Jason Kidd", "Steve Nash", "Isiah Thomas",
+      "Bob Pettit", "John Havlicek", "Walt Frazier", "Willis Reed", "Rick Barry",
+      "Clyde Drexler", "Dominique Wilkins", "Paul Pierce", "Tracy McGrady", "Ray Allen",
+      "Reggie Miller", "Damian Lillard", "Jimmy Butler", "Draymond Green", "Manu Ginobili",
+      "Dennis Rodman", "Kevin McHale", "Bob McAdoo", "Dave Cowens", "George Gervin",
+      "Penny Hardaway", "Yao Ming", "Dwight Howard", "Alonzo Mourning", "Blake Griffin",
+      "Pau Gasol", "Marc Gasol"
+    ]);
+    const COURT_SPOTS = [
+      [252, 116], [358, 234], [480, 150], [602, 234], [708, 116],
+      [252, 292], [358, 304], [480, 300], [602, 304], [708, 292]
+    ];
+
+    const els = {
+      classicMode: document.getElementById("classicMode"),
+      hoopMode: document.getElementById("hoopMode"),
+      audioBtn: document.getElementById("audioBtn"),
+      roundTop: document.getElementById("roundTop"),
+      recordTop: document.getElementById("recordTop"),
+      powerTop: document.getElementById("powerTop"),
+      scoreRoster: document.getElementById("scoreRoster"),
+      scorePower: document.getElementById("scorePower"),
+      roundTitle: document.getElementById("roundTitle"),
+      remainingBadge: document.getElementById("remainingBadge"),
+      teamReel: document.getElementById("teamReel"),
+      eraReel: document.getElementById("eraReel"),
+      rollBtn: document.getElementById("rollBtn"),
+      simulateBtn: document.getElementById("simulateBtn"),
+      teamSkipBtn: document.getElementById("teamSkipBtn"),
+      eraSkipBtn: document.getElementById("eraSkipBtn"),
+      teamSkips: document.getElementById("teamSkips"),
+      eraSkips: document.getElementById("eraSkips"),
+      depthMini: document.getElementById("depthMini"),
+      balanceMini: document.getElementById("balanceMini"),
+      defenseMini: document.getElementById("defenseMini"),
+      choiceTitle: document.getElementById("choiceTitle"),
+      choiceHint: document.getElementById("choiceHint"),
+      modeBadge: document.getElementById("modeBadge"),
+      choices: document.getElementById("choices"),
+      rosterGrid: document.getElementById("rosterGrid"),
+      ptsLabel: document.getElementById("ptsLabel"),
+      rebLabel: document.getElementById("rebLabel"),
+      astLabel: document.getElementById("astLabel"),
+      defLabel: document.getElementById("defLabel"),
+      depthLabel: document.getElementById("depthLabel"),
+      ptsBar: document.getElementById("ptsBar"),
+      rebBar: document.getElementById("rebBar"),
+      astBar: document.getElementById("astBar"),
+      defBar: document.getElementById("defBar"),
+      depthBar: document.getElementById("depthBar"),
+      courtPlayers: document.getElementById("courtPlayers"),
+      resetBtn: document.getElementById("resetBtn"),
+      seasonCard: document.getElementById("seasonCard"),
+      seasonTitle: document.getElementById("seasonTitle"),
+      recordLarge: document.getElementById("recordLarge"),
+      seedLine: document.getElementById("seedLine"),
+      resultNote: document.getElementById("resultNote"),
+      scheduleStrip: document.getElementById("scheduleStrip"),
+      leaders: document.getElementById("leaders"),
+      resimBtn: document.getElementById("resimBtn"),
+      copyBtn: document.getElementById("copyBtn"),
+      confirmModal: document.getElementById("confirmModal"),
+      cancelReset: document.getElementById("cancelReset"),
+      confirmReset: document.getElementById("confirmReset"),
+      toast: document.getElementById("toast")
+    };
+
+    const state = {
+      roster: Array(ROSTER_SIZE).fill(null),
+      currentRoll: null,
+      teamSkips: 1,
+      eraSkips: 1,
+      mode: "classic",
+      audioOn: false,
+      sfxOn: true,
+      runCount: 0,
+      best: readBest()
+    };
+
+    const audioState = {
+      ctx: null,
+      master: null,
+      musicGain: null,
+      delay: null,
+      filter: null,
+      timers: [],
+      step: 0,
+      nextNoteAt: 0
+    };
+
+    function p(name, team, decade, season, role, pts, reb, ast, stl, blk, tags) {
+      if (typeof role !== "string") {
+        const fixedSeason = role;
+        role = season;
+        season = fixedSeason;
+      }
+      return {
+        id: `${name}-${team}-${decade}-${season}`.replace(/[^a-z0-9]+/gi, "-").toLowerCase(),
+        name,
+        team,
+        decade,
+        season,
+        role,
+        pts,
+        reb,
+        ast,
+        stl,
+        blk,
+        tags
+      };
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function sample(list) {
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
+    function weightedSample(list, weightFor) {
+      const weights = list.map(item => Math.max(0.01, weightFor(item)));
+      const total = weights.reduce((sum, weight) => sum + weight, 0);
+      let roll = Math.random() * total;
+      for (let index = 0; index < list.length; index += 1) {
+        roll -= weights[index];
+        if (roll <= 0) return list[index];
+      }
+      return list[list.length - 1];
+    }
+
+    function shuffle(list) {
+      return [...list].sort(() => Math.random() - 0.5);
+    }
+
+    function uniqueByName(list) {
+      const seen = new Set();
+      return list.filter(player => {
+        if (seen.has(player.name)) return false;
+        seen.add(player.name);
+        return true;
+      });
+    }
+
+    function rosterCount() {
+      return state.roster.filter(Boolean).length;
+    }
+
+    function filledRoster() {
+      return state.roster.filter(Boolean);
+    }
+
+    function legalPositions(player) {
+      if (!player) return [];
+      if (POSITION_OVERRIDES[player.name]) return POSITION_OVERRIDES[player.name];
+      if (player.role === "G") return ["PG", "SG"];
+      if (player.role === "W") return ["SG", "SF", "PF"];
+      return ["PF", "C"];
+    }
+
+    function canOccupy(player, slotIndex) {
+      if (!player || slotIndex < 0 || slotIndex >= ROSTER_SIZE) return false;
+      if (slotIndex >= 5) return true;
+      return legalPositions(player).includes(POSITIONS[slotIndex]);
+    }
+
+    function firstOpenLegalSlot(player) {
+      const starterSlot = state.roster.findIndex((item, index) => !item && canOccupy(player, index));
+      if (starterSlot !== -1) return starterSlot;
+      return state.roster.findIndex((item, index) => !item && index >= 5);
+    }
+
+    function moveOptions(player, fromIndex) {
+      return POSITIONS
+        .map((label, index) => ({ label, index }))
+        .filter(({ index }) => {
+          if (index === fromIndex || !canOccupy(player, index)) return false;
+          const target = state.roster[index];
+          return !target || canOccupy(target, fromIndex) || findRotationBench(fromIndex, index) !== -1;
+        });
+    }
+
+    function findRotationBench(fromIndex, toIndex) {
+      return state.roster.findIndex((benchPlayer, index) => (
+        index >= 5 &&
+        index !== fromIndex &&
+        index !== toIndex &&
+        benchPlayer &&
+        canOccupy(benchPlayer, fromIndex)
+      ));
+    }
+
+    function movePlayer(fromIndex, toIndex) {
+      const player = state.roster[fromIndex];
+      const target = state.roster[toIndex];
+      if (!player || !canOccupy(player, toIndex)) {
+        showToast("That player cannot play that spot.");
+        return;
+      }
+      if (!target || canOccupy(target, fromIndex)) {
+        state.roster[toIndex] = player;
+        state.roster[fromIndex] = target || null;
+      } else {
+        const benchIndex = findRotationBench(fromIndex, toIndex);
+        if (benchIndex === -1) {
+          showToast(`${target.name} needs a legal landing spot first.`);
+          return;
+        }
+        const benchPlayer = state.roster[benchIndex];
+        state.roster[toIndex] = player;
+        state.roster[benchIndex] = target;
+        state.roster[fromIndex] = benchPlayer;
+      }
+      state.sim = null;
+      playSfx("click");
+      render();
+    }
+
+    function initials(name) {
+      return name
+        .replace(/'/g, "")
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(part => part[0])
+        .join("")
+        .toUpperCase();
+    }
+
+    function adjustedStat(player, stat) {
+      return player[stat] * ERA_ADJUST[player.decade][stat];
+    }
+
+    function playerRating(player) {
+      const offense = adjustedStat(player, "pts") * 1.05 + adjustedStat(player, "ast") * 2.18;
+      const defense = adjustedStat(player, "reb") * 0.82 + adjustedStat(player, "stl") * 5.2 + adjustedStat(player, "blk") * 4.35;
+      const roleBump = player.role === "G" ? 1.2 : player.role === "W" ? 1.0 : 1.35;
+      return Math.round(clamp((offense + defense) * 0.88 + 32 + roleBump, 60, 99));
+    }
+
+    function isHallOfFameLevel(player) {
+      return HALL_OF_FAME_LEVEL_NAMES.has(player.name) || playerRating(player) >= 92;
+    }
+
+    function hallOfFameCount() {
+      return filledRoster().filter(isHallOfFameLevel).length;
+    }
+
+    function comboStrength(combo) {
+      const candidates = candidatesFor(combo);
+      if (!candidates.length) return 99;
+      const top = candidates.slice(0, Math.min(4, candidates.length));
+      return top.reduce((sum, player) => sum + playerRating(player), 0) / top.length;
+    }
+
+    function comboRollWeight(combo) {
+      const strength = comboStrength(combo);
+      const success = TEAM_SUCCESS[combo.team] || 5;
+      const weakEraBoost = clamp((97 - strength) / 11, 0.28, 4.8);
+      const franchiseBoost = clamp((11.5 - success) / 3.2, 0.38, 2.95);
+      const elitePenalty = success >= 7 && strength >= 90 ? 0.42 : 1;
+      const roughEraOnGreatTeamBoost = success >= 7 && strength < 84 ? 2.15 : 1;
+      const scarcityBoost = candidatesFor(combo).length <= MIN_ROLL_CHOICES ? 1.22 : 1;
+      return weakEraBoost * weakEraBoost * franchiseBoost * elitePenalty * roughEraOnGreatTeamBoost * scarcityBoost;
+    }
+
+    function allAvailableCombos() {
+      const picked = new Set(filledRoster().map(player => player.id));
+      const pickedNames = new Set(filledRoster().map(player => player.name));
+      const seen = new Set();
+      return PLAYERS
+        .filter(player => !picked.has(player.id) && !pickedNames.has(player.name))
+        .map(player => ({ team: player.team, decade: player.decade }))
+        .filter(combo => {
+          const key = `${combo.team}|${combo.decade}`;
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+    }
+
+    function candidatesFor(combo) {
+      const picked = new Set(filledRoster().map(player => player.id));
+      const pickedNames = new Set(filledRoster().map(player => player.name));
+      return PLAYERS
+        .filter(player => player.team === combo.team && player.decade === combo.decade && !picked.has(player.id) && !pickedNames.has(player.name))
+        .sort((a, b) => playerRating(b) - playerRating(a));
+    }
+
+    function boardCandidates(combo) {
+      const picked = new Set(filledRoster().map(player => player.id));
+      const pickedNames = new Set(filledRoster().map(player => player.name));
+      const exact = uniqueByName(PLAYERS.filter(player => (
+        player.team === combo.team &&
+        player.decade === combo.decade &&
+        !picked.has(player.id) &&
+        !pickedNames.has(player.name)
+      )));
+      const stars = shuffle(exact.filter(player => playerRating(player) >= 90)).slice(0, 2);
+      const regulars = shuffle(exact.filter(player => playerRating(player) < 90))
+        .sort((a, b) => ((playerRating(b) + Math.random() * 14) - (playerRating(a) + Math.random() * 14)));
+      const selected = uniqueByName([...stars, ...regulars]).slice(0, CHOICE_COUNT);
+      return shuffle(selected).slice(0, CHOICE_COUNT);
+    }
+
+    function playableCombos(list, minimum = MIN_ROLL_CHOICES) {
+      for (let size = minimum; size >= 1; size -= 1) {
+        const options = list.filter(combo => candidatesFor(combo).length >= size);
+        if (options.length) return options;
+      }
+      return [];
+    }
+
+    function rollSlot(preferred) {
+      if (rosterCount() >= ROSTER_SIZE) return;
+      const combos = allAvailableCombos();
+      if (!combos.length) {
+        showToast("The player pool is empty.");
+        return;
+      }
+      if (preferred && candidatesFor(preferred).length) {
+        state.currentRoll = preferred;
+        state.sim = null;
+        playSfx("roll");
+        render();
+        return;
+      }
+      const playable = playableCombos(combos);
+      const pool = playable.length ? playable : combos;
+      const usable = weightedSample(pool, comboRollWeight);
+      state.currentRoll = usable;
+      state.sim = null;
+      playSfx("roll");
+      render();
+    }
+
+    function skipTeam() {
+      if (!state.currentRoll || state.teamSkips <= 0) return;
+      const options = playableCombos(allAvailableCombos().filter(combo => (
+        combo.decade === state.currentRoll.decade && combo.team !== state.currentRoll.team
+      )));
+      if (!options.length) {
+        showToast("No other team has an available player in this era.");
+        return;
+      }
+      state.teamSkips -= 1;
+      rollSlot(weightedSample(options, comboRollWeight));
+    }
+
+    function skipEra() {
+      if (!state.currentRoll || state.eraSkips <= 0) return;
+      const options = playableCombos(allAvailableCombos().filter(combo => (
+        combo.team === state.currentRoll.team && combo.decade !== state.currentRoll.decade
+      )));
+      if (!options.length) {
+        showToast("No other era is open for this team.");
+        return;
+      }
+      state.eraSkips -= 1;
+      rollSlot(weightedSample(options, comboRollWeight));
+    }
+
+    function draftPlayer(id) {
+      if (rosterCount() >= ROSTER_SIZE) return;
+      const player = PLAYERS.find(item => item.id === id);
+      if (!player || state.roster.some(item => item && (item.id === id || item.name === player.name))) return;
+      const slot = firstOpenLegalSlot(player);
+      if (slot === -1) {
+        showToast(`No legal open spot for ${player.name}. Move someone first.`);
+        return;
+      }
+      state.roster[slot] = player;
+      state.currentRoll = null;
+      state.sim = null;
+      if (rosterCount() === ROSTER_SIZE) {
+        showToast("Rotation full. Run the 10-year dynasty.");
+      }
+      playSfx("pick");
+      render();
+    }
+
+    function resetDraft() {
+      state.roster = Array(ROSTER_SIZE).fill(null);
+      state.currentRoll = null;
+      state.teamSkips = 1;
+      state.eraSkips = 1;
+      state.runCount = 0;
+      state.sim = null;
+      els.confirmModal.classList.remove("open");
+      playSfx("click");
+      render();
+    }
+
+    function weightedRoster() {
+      return state.roster
+        .map((player, index) => player ? ({ player, weight: SLOT_WEIGHTS[index], slot: index }) : null)
+        .filter(Boolean);
+    }
+
+    function roleBalance(roster) {
+      const counts = roster.filter(Boolean).reduce((acc, player) => {
+        acc[player.role] += 1;
+        return acc;
+      }, { G: 0, W: 0, B: 0 });
+      const guard = clamp(counts.G / 3, 0, 1);
+      const wing = clamp(counts.W / 3, 0, 1);
+      const big = clamp(counts.B / 3, 0, 1);
+      const excessPenalty = Math.max(0, Math.max(counts.G, counts.W, counts.B) - 5) * 0.06;
+      return clamp(((guard + wing + big) / 3) - excessPenalty, 0.45, 1);
+    }
+
+    function teamBreakdown() {
+      const weighted = weightedRoster();
+      const totals = { pts: 0, reb: 0, ast: 0, stl: 0, blk: 0, rating: 0 };
+      weighted.forEach(({ player, weight }) => {
+        totals.pts += adjustedStat(player, "pts") * weight;
+        totals.reb += adjustedStat(player, "reb") * weight;
+        totals.ast += adjustedStat(player, "ast") * weight;
+        totals.stl += adjustedStat(player, "stl") * weight;
+        totals.blk += adjustedStat(player, "blk") * weight;
+        totals.rating += playerRating(player) * weight;
+      });
+
+      const targets = { pts: 124, reb: 50, ast: 35, stl: 8.7, blk: 7.8 };
+      const normalized = {
+        pts: clamp((totals.pts / targets.pts) * 100, 0, 116),
+        reb: clamp((totals.reb / targets.reb) * 100, 0, 116),
+        ast: clamp((totals.ast / targets.ast) * 100, 0, 116),
+        def: clamp(((totals.stl / targets.stl) * 48) + ((totals.blk / targets.blk) * 52), 0, 116)
+      };
+      const categoryAverage = (normalized.pts + normalized.reb + normalized.ast + normalized.def) / 4;
+      const weakest = Math.min(normalized.pts, normalized.reb, normalized.ast, normalized.def);
+      const balance = clamp((weakest / Math.max(categoryAverage, 1)) * 100, 0, 100);
+      const sortedRatings = weighted.map(item => playerRating(item.player));
+      const starterAvg = sortedRatings.slice(0, 5).reduce((sum, value) => sum + value, 0) / Math.max(1, Math.min(5, sortedRatings.length));
+      const benchRatings = sortedRatings.slice(5, ROSTER_SIZE);
+      const benchAvg = benchRatings.reduce((sum, value) => sum + value, 0) / Math.max(1, benchRatings.length || 1);
+      const depth = rosterCount() < ROSTER_SIZE ? 0 : clamp((benchAvg / Math.max(starterAvg, 1)) * 100, 0, 100);
+      const defense = normalized.def;
+      const role = roleBalance(state.roster) * 100;
+      const eraVariety = clamp((new Set(filledRoster().map(player => player.decade)).size / 7) * 100, 0, 100);
+      const power = clamp(
+        (categoryAverage * 0.5) +
+        (balance * 0.14) +
+        (depth * 0.13) +
+        (defense * 0.1) +
+        (role * 0.1) +
+        (eraVariety * 0.04),
+        0,
+        108
+      );
+
+      return {
+        totals,
+        normalized,
+        balance,
+        depth,
+        defense,
+        role,
+        eraVariety,
+        power
+      };
+    }
+
+    function seededRandom(seedText) {
+      let hash = 1779033703 ^ seedText.length;
+      for (let i = 0; i < seedText.length; i += 1) {
+        hash = Math.imul(hash ^ seedText.charCodeAt(i), 3432918353);
+        hash = (hash << 13) | (hash >>> 19);
+      }
+      return function rand() {
+        hash = Math.imul(hash ^ (hash >>> 16), 2246822507);
+        hash = Math.imul(hash ^ (hash >>> 13), 3266489909);
+        hash ^= hash >>> 16;
+        return (hash >>> 0) / 4294967296;
+      };
+    }
+
+    function normal(rand) {
+      const u = Math.max(rand(), 0.0001);
+      const v = Math.max(rand(), 0.0001);
+      return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+    }
+
+    function enforceDynastyFloor(years, minimumRings) {
+      const upgraded = [...years]
+        .filter(year => !year.ring)
+        .sort((a, b) => (b.wins + b.power) - (a.wins + a.power));
+      while (years.filter(year => year.ring).length < minimumRings && upgraded.length) {
+        const year = upgraded.shift();
+        year.ring = true;
+        year.finals = true;
+        year.exit = "Champions";
+      }
+    }
+
+    function initAudio() {
+      if (audioState.ctx) return audioState.ctx;
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return null;
+      const ctx = new AudioContext();
+      const master = ctx.createGain();
+      const musicGain = ctx.createGain();
+      const filter = ctx.createBiquadFilter();
+      const delay = ctx.createDelay();
+      const feedback = ctx.createGain();
+      master.gain.value = 0.22;
+      musicGain.gain.value = 0.12;
+      filter.type = "lowpass";
+      filter.frequency.value = 1450;
+      delay.delayTime.value = 0.24;
+      feedback.gain.value = 0.18;
+      musicGain.connect(filter);
+      filter.connect(master);
+      filter.connect(delay);
+      delay.connect(feedback);
+      feedback.connect(delay);
+      delay.connect(master);
+      master.connect(ctx.destination);
+      audioState.ctx = ctx;
+      audioState.master = master;
+      audioState.musicGain = musicGain;
+      audioState.filter = filter;
+      audioState.delay = delay;
+      audioState.nextNoteAt = ctx.currentTime + 0.05;
+      return ctx;
+    }
+
+    function playTone(freq, start, duration, type, gain, destination) {
+      const ctx = audioState.ctx;
+      if (!ctx) return;
+      const osc = ctx.createOscillator();
+      const amp = ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, start);
+      amp.gain.setValueAtTime(0.0001, start);
+      amp.gain.exponentialRampToValueAtTime(gain, start + 0.02);
+      amp.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+      osc.connect(amp);
+      amp.connect(destination || audioState.master);
+      osc.start(start);
+      osc.stop(start + duration + 0.04);
+    }
+
+    function scheduleMusic() {
+      const ctx = audioState.ctx;
+      if (!ctx || !state.audioOn) return;
+      const chords = [
+        [196.0, 246.94, 293.66, 369.99],
+        [174.61, 220.0, 261.63, 329.63],
+        [146.83, 196.0, 246.94, 293.66],
+        [164.81, 207.65, 246.94, 311.13]
+      ];
+      const lead = [392.0, 440.0, 493.88, 587.33, 523.25, 493.88, 440.0, 392.0];
+      while (audioState.nextNoteAt < ctx.currentTime + 0.7) {
+        const step = audioState.step;
+        const when = audioState.nextNoteAt;
+        const chord = chords[Math.floor(step / 8) % chords.length];
+        if (step % 8 === 0) {
+          chord.forEach((freq, index) => playTone(freq, when, 1.25, index ? "triangle" : "sine", index ? 0.018 : 0.025, audioState.musicGain));
+        }
+        if (step % 2 === 0) {
+          playTone(lead[step % lead.length], when + 0.02, 0.32, "sine", 0.012, audioState.musicGain);
+        }
+        if (step % 4 === 2) {
+          playTone(chord[0] / 2, when, 0.22, "sine", 0.02, audioState.musicGain);
+        }
+        audioState.step += 1;
+        audioState.nextNoteAt += 0.36;
+      }
+    }
+
+    function startMusic() {
+      const ctx = initAudio();
+      if (!ctx) {
+        showToast("Audio is not available in this browser.");
+        return false;
+      }
+      ctx.resume();
+      stopMusicTimers();
+      audioState.timers.push(setInterval(scheduleMusic, 140));
+      scheduleMusic();
+      return true;
+    }
+
+    function stopMusicTimers() {
+      audioState.timers.forEach(timer => clearInterval(timer));
+      audioState.timers = [];
+    }
+
+    function toggleAudio() {
+      state.audioOn = !state.audioOn;
+      if (state.audioOn) {
+        if (!startMusic()) {
+          state.audioOn = false;
+          renderAudio();
+          return;
+        }
+        playSfx("pick");
+      } else {
+        stopMusicTimers();
+        playSfx("click");
+      }
+      renderAudio();
+    }
+
+    function renderAudio() {
+      els.audioBtn.textContent = state.audioOn ? "Audio on" : "Audio off";
+      els.audioBtn.classList.toggle("on", state.audioOn);
+      els.audioBtn.setAttribute("aria-pressed", String(state.audioOn));
+    }
+
+    function playSfx(kind = "click") {
+      if (!state.sfxOn) return;
+      const ctx = initAudio();
+      if (!ctx) return;
+      ctx.resume();
+      const now = ctx.currentTime;
+      if (kind === "roll") {
+        playTone(196, now, 0.06, "triangle", 0.035);
+        playTone(293.66, now + 0.055, 0.08, "triangle", 0.028);
+      } else if (kind === "pick") {
+        playTone(329.63, now, 0.08, "sine", 0.028);
+        playTone(493.88, now + 0.07, 0.14, "sine", 0.03);
+      } else if (kind === "ring") {
+        playTone(392, now, 0.12, "sine", 0.03);
+        playTone(587.33, now + 0.09, 0.18, "sine", 0.035);
+        playTone(783.99, now + 0.18, 0.22, "sine", 0.025);
+      } else {
+        playTone(320, now, 0.035, "triangle", 0.024);
+        playTone(520, now + 0.012, 0.035, "sine", 0.012);
+      }
+    }
+
+    function runSeason() {
+      if (rosterCount() < ROSTER_SIZE) {
+        showToast("Fill all 6 rotation spots first.");
+        return;
+      }
+
+      state.runCount += 1;
+      const profile = teamBreakdown();
+      const seedText = `${state.roster.map(player => player ? player.id : "empty").join("|")}|${state.runCount}|${Date.now()}`;
+      const rand = seededRandom(seedText);
+      const years = [];
+      let rings = 0;
+      let finals = 0;
+      let totalWins = 0;
+
+      for (let year = 1; year <= 10; year += 1) {
+        const agingSwing = normal(rand) * 3.1;
+        const chemistry = (profile.balance - 78) * 0.065 + (profile.depth - 70) * 0.045 + (profile.role - 76) * 0.035;
+        const yearPower = profile.power + agingSwing + chemistry;
+        const wins = Math.round(clamp(39 + ((yearPower - 66) * 0.72) + normal(rand) * 4.5, 34, 73));
+        totalWins += wins;
+
+        let roundReached = 0;
+        let exit = "Lottery";
+        if (wins >= 44) {
+          exit = "Round 1";
+          for (let round = 1; round <= 4; round += 1) {
+            const pressure = 78 + round * 4.8 + normal(rand) * 4.9;
+            const defenseLift = (profile.defense - 78) * 0.032;
+            const creationLift = (profile.normalized.ast - 78) * 0.028;
+            const balanceLift = (profile.balance - 76) * 0.028;
+            const depthLift = round >= 3 ? (profile.depth - 68) * 0.032 : (profile.depth - 68) * 0.014;
+            const contenderTax = round >= 3 ? 3.4 : 0;
+            const playoffScore = yearPower + defenseLift + creationLift + balanceLift + depthLift + normal(rand) * 6.1 - contenderTax;
+            if (playoffScore >= pressure) {
+              roundReached = round;
+              exit = round === 1 ? "Semis" : round === 2 ? "Conference Finals" : round === 3 ? "Finals" : "Champions";
+            } else {
+              break;
+            }
+          }
+        }
+
+        const wonRing = roundReached === 4;
+        const madeFinals = roundReached >= 3;
+        if (wonRing) rings += 1;
+        if (madeFinals) finals += 1;
+        years.push({ year, wins, ring: wonRing, finals: madeFinals, exit, power: Number(yearPower.toFixed(1)) });
+      }
+
+      const hofCount = hallOfFameCount();
+      if (hofCount >= 5 && rings < 2) {
+        enforceDynastyFloor(years, 2);
+        rings = years.filter(year => year.ring).length;
+        finals = years.filter(year => year.finals).length;
+      }
+
+      state.sim = {
+        rings,
+        finals,
+        years,
+        totalWins,
+        profile,
+        hofCount,
+        seed: String(Math.abs(Math.round(seedText.split("").reduce((sum, char) => sum + char.charCodeAt(0), 0) * 17 + profile.power * 23))).slice(-5)
+      };
+
+      saveBest(state.sim);
+      playSfx(rings > 0 ? "ring" : "click");
+      render();
+    }
+
+    function saveBest(sim) {
+      if (!sim) return;
+      const rosterText = filledRoster().map(player => player.name).join(", ");
+      const current = { rings: sim.rings, finals: sim.finals, roster: rosterText, power: Math.round(sim.profile.power) };
+      const previous = readBest();
+      if (!previous || current.rings > previous.rings || (current.rings === previous.rings && current.finals > previous.finals) || (current.rings === previous.rings && current.finals === previous.finals && current.power > previous.power)) {
+        localStorage.setItem("howManyRingsBest", JSON.stringify(current));
+        state.best = current;
+      }
+    }
+
+    function readBest() {
+      try {
+        return JSON.parse(localStorage.getItem("howManyRingsBest"));
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function copyRoster() {
+      const sim = state.sim;
+      if (!sim) return;
+      const lines = [
+        `How Many Rings?: ${sim.rings} rings, ${sim.finals} Finals trips | Dynasty ${Math.round(sim.profile.power)}`,
+        ...state.roster.map((player, index) => `${POSITIONS[index]}. ${player.name} (${TEAMS[player.team].full}, ${player.decade})`)
+      ];
+      navigator.clipboard?.writeText(lines.join("\n")).then(() => {
+        playSfx("click");
+        showToast("Roster copied.");
+      }).catch(() => {
+        showToast("Copy is blocked in this browser.");
+      });
+    }
+
+    function showToast(message) {
+      els.toast.textContent = message;
+      els.toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => els.toast.classList.remove("show"), 1900);
+    }
+
+    function setMode(mode) {
+      state.mode = mode;
+      state.sim = null;
+      playSfx("click");
+      render();
+    }
+
+    function render() {
+      const profile = teamBreakdown();
+      const filled = rosterCount();
+      const round = Math.min(filled + 1, ROSTER_SIZE);
+      els.roundTop.textContent = `${round}/${ROSTER_SIZE}`;
+      els.recordTop.textContent = state.sim ? `${state.sim.rings}` : (state.best ? `${state.best.rings}` : "--");
+      els.powerTop.textContent = Math.round(profile.power);
+      els.scoreRoster.textContent = `${filled} / ${ROSTER_SIZE}`;
+      els.scorePower.textContent = Math.round(profile.power);
+      els.roundTitle.textContent = filled >= ROSTER_SIZE ? "Rotation full" : `Round ${round}`;
+      els.remainingBadge.textContent = `${ROSTER_SIZE - filled} picks left`;
+      els.teamReel.textContent = state.currentRoll ? TEAMS[state.currentRoll.team].full : (filled >= ROSTER_SIZE ? "Locked" : "Ready");
+      els.eraReel.textContent = state.currentRoll ? state.currentRoll.decade : (filled >= ROSTER_SIZE ? "Dynasty" : "Roll");
+      els.rollBtn.disabled = filled >= ROSTER_SIZE;
+      els.simulateBtn.disabled = filled < ROSTER_SIZE;
+      els.teamSkipBtn.disabled = !state.currentRoll || state.teamSkips <= 0 || filled >= ROSTER_SIZE;
+      els.eraSkipBtn.disabled = !state.currentRoll || state.eraSkips <= 0 || filled >= ROSTER_SIZE;
+      els.teamSkips.textContent = state.teamSkips;
+      els.eraSkips.textContent = state.eraSkips;
+      els.depthMini.textContent = Math.round(profile.depth);
+      els.balanceMini.textContent = Math.round(profile.balance);
+      els.defenseMini.textContent = Math.round(profile.defense);
+      els.classicMode.classList.toggle("active", state.mode === "classic");
+      els.hoopMode.classList.toggle("active", state.mode === "hoop");
+      els.modeBadge.textContent = state.mode === "classic" ? "Stats visible" : "Stats hidden";
+
+      updateMeters(profile);
+      renderAudio();
+      renderChoices();
+      renderRoster();
+      renderCourt();
+      renderSeason();
+    }
+
+    function updateMeters(profile) {
+      const entries = [
+        ["pts", profile.normalized.pts, els.ptsLabel, els.ptsBar],
+        ["reb", profile.normalized.reb, els.rebLabel, els.rebBar],
+        ["ast", profile.normalized.ast, els.astLabel, els.astBar],
+        ["def", profile.normalized.def, els.defLabel, els.defBar],
+        ["depth", profile.depth, els.depthLabel, els.depthBar]
+      ];
+      entries.forEach(([, value, label, bar]) => {
+        const rounded = Math.round(value);
+        label.textContent = rounded;
+        bar.style.width = `${clamp(value, 0, 100)}%`;
+      });
+    }
+
+    function renderChoices() {
+      if (!state.currentRoll) {
+        const filled = rosterCount();
+        els.choiceTitle.textContent = filled >= ROSTER_SIZE ? "Draft complete" : "Player board";
+        els.choiceHint.textContent = filled >= ROSTER_SIZE ? "Run the dynasty from the slot panel." : "Roll the slot to start the draft.";
+        els.choices.innerHTML = `<div class="empty-state">${filled >= ROSTER_SIZE ? "Rotation filled. Use the roster chips to adjust positions." : "No board yet."}</div>`;
+        return;
+      }
+
+      const team = TEAMS[state.currentRoll.team];
+      const candidates = boardCandidates(state.currentRoll);
+      els.choiceTitle.textContent = `${team.full} ${state.currentRoll.decade}`;
+      els.choiceHint.textContent = `${candidates.length} available ${candidates.length === 1 ? "player" : "players"}`;
+      els.choices.innerHTML = candidates.map(playerCard).join("");
+      els.choices.querySelectorAll(".player-card").forEach(card => {
+        card.addEventListener("click", () => draftPlayer(card.dataset.playerId));
+      });
+    }
+
+    function playerCard(player) {
+      const team = TEAMS[player.team];
+      const hidden = state.mode === "hoop";
+      return `
+        <button class="player-card" data-player-id="${player.id}" type="button" style="--accent:${team.color}">
+          <span class="sr-only">Draft ${player.name}</span>
+          <span class="player-top">
+            <span class="avatar" aria-hidden="true">${initials(player.name)}</span>
+            <span class="player-name">
+              <strong>${player.name}</strong>
+              <span>${team.full} - ${player.season} - ${legalPositions(player).join("/")}</span>
+            </span>
+            <span class="rating-chip">${hidden ? "?" : playerRating(player)}</span>
+          </span>
+          ${hidden ? `
+            <span class="hidden-line">HoopIQ card</span>
+          ` : `
+            <span class="stat-row">
+              ${statCell("PTS", player.pts)}
+              ${statCell("REB", player.reb)}
+              ${statCell("AST", player.ast)}
+              ${statCell("STL", player.stl)}
+              ${statCell("BLK", player.blk)}
+            </span>
+          `}
+          <span class="tag-row">
+            <span class="tag">${legalPositions(player).join("/")}</span>
+            ${player.tags.map(tag => `<span class="tag">${tag}</span>`).join("")}
+          </span>
+        </button>
+      `;
+    }
+
+    function statCell(label, value) {
+      return `<span class="stat"><span>${label}</span><strong>${Number(value).toFixed(1)}</strong></span>`;
+    }
+
+    function roleLabel(role) {
+      return role === "G" ? "Guard" : role === "W" ? "Wing" : "Big";
+    }
+
+    function renderRoster() {
+      let html = "";
+      for (let i = 0; i < ROSTER_SIZE; i += 1) {
+        const player = state.roster[i];
+        if (!player) {
+          html += `<div class="slot-card empty">${POSITIONS[i]}</div>`;
+          continue;
+        }
+        const role = i < 5 ? "Starter" : "Bench";
+        const moves = moveOptions(player, i);
+        html += `
+          <div class="slot-card">
+            <div class="slot-num">
+              <span>${POSITIONS[i]}</span>
+              <span>${role} - ${playerRating(player)}</span>
+            </div>
+            <strong class="slot-name">${player.name}</strong>
+            <span class="slot-meta">${TEAMS[player.team].full} - ${player.decade}</span>
+            <div class="position-row" aria-label="${player.name} eligible positions">
+              ${legalPositions(player).map(pos => `<span class="pos-chip">${pos}</span>`).join("")}
+            </div>
+            <div class="position-row" aria-label="Move ${player.name}">
+              ${moves.length ? moves.map(({ label, index }) => `<button class="move-chip" type="button" data-from="${i}" data-to="${index}">${label}</button>`).join("") : `<span class="pos-chip">Locked</span>`}
+            </div>
+          </div>
+        `;
+      }
+      els.rosterGrid.innerHTML = html;
+      els.rosterGrid.querySelectorAll(".move-chip").forEach(button => {
+        button.addEventListener("click", event => {
+          event.stopPropagation();
+          movePlayer(Number(button.dataset.from), Number(button.dataset.to));
+        });
+      });
+    }
+
+    function renderCourt() {
+      let html = "";
+      for (let i = 0; i < ROSTER_SIZE; i += 1) {
+        const [x, y] = COURT_SPOTS[i];
+        const player = state.roster[i];
+        if (!player) {
+          html += `
+            <g class="court-player empty">
+              <circle cx="${x}" cy="${y}" r="28" fill="rgba(255,250,240,0.36)" stroke="rgba(255,250,240,0.78)" stroke-width="3"></circle>
+              <text x="${x}" y="${y + 6}" text-anchor="middle" fill="rgba(18,20,25,0.54)" font-size="16">${i + 1}</text>
+            </g>
+          `;
+        } else {
+          const team = TEAMS[player.team];
+          html += `
+            <g class="court-player filled">
+              <circle cx="${x}" cy="${y}" r="30" fill="${team.color}" stroke="#fffaf0" stroke-width="4"></circle>
+              <text x="${x}" y="${y + 6}" text-anchor="middle" fill="#fffaf0" font-size="15">${initials(player.name)}</text>
+            </g>
+          `;
+        }
+      }
+      els.courtPlayers.innerHTML = html;
+    }
+
+    function renderSeason() {
+      if (!state.sim) {
+        els.seasonCard.classList.add("hidden");
+        return;
+      }
+      const { rings, finals, years, profile, seed, totalWins } = state.sim;
+      els.seasonCard.classList.remove("hidden");
+      els.seasonTitle.textContent = rings >= 6 ? "Dynasty result" : "Title window";
+      els.recordLarge.textContent = `${rings}`;
+      els.seedLine.textContent = `${finals} Finals - ${Math.round(totalWins / 10)} avg wins`;
+      els.resultNote.textContent = resultCopy(rings, finals, profile);
+      els.scheduleStrip.innerHTML = years.map(year => (
+        `<span class="game-dot ${year.ring ? "ring" : year.finals ? "finals" : "miss"}" title="Year ${year.year}: ${year.wins} wins, ${year.exit}"></span>`
+      )).join("");
+
+      const leaders = weightedRoster().slice(0, 4).map(({ player }, index) => `
+        <div class="leader">
+          <span>${index === 0 ? "MVP" : index < 3 ? "Core" : "Bench key"}</span>
+          <strong>${player.name}</strong>
+        </div>
+      `).join("");
+      els.leaders.innerHTML = leaders;
+    }
+
+    function resultCopy(rings, finals, profile) {
+      if (rings >= 8) return "All-time run. This rotation owned a decade and left almost nothing for the rest of the league.";
+      if (rings >= 5) return "Historic dynasty. The titles kept coming because the stars, balance, and sixth man all held up.";
+      if (rings >= 3) return "Real dynasty. Not perfect, but enough high-end talent and playoff answers to stack banners.";
+      if (rings >= 1) return "Championship core. A few years broke right, but the window still had pressure points.";
+      if (finals > 0) return "Close, but no banner. The roster reached June and ran into one last matchup problem.";
+      return profile.depth < 55 ? "The stars needed more help. A stronger sixth man changes this window fast." : "Good talent, but one or two categories kept dragging the playoff ceiling down.";
+    }
+
+    els.audioBtn.addEventListener("click", toggleAudio);
+    document.addEventListener("pointerdown", event => {
+      if (event.target.closest("button")) playSfx("click");
+    }, { capture: true });
+    els.rollBtn.addEventListener("click", () => rollSlot());
+    els.teamSkipBtn.addEventListener("click", skipTeam);
+    els.eraSkipBtn.addEventListener("click", skipEra);
+    els.simulateBtn.addEventListener("click", runSeason);
+    els.resimBtn.addEventListener("click", runSeason);
+    els.copyBtn.addEventListener("click", copyRoster);
+    els.classicMode.addEventListener("click", () => setMode("classic"));
+    els.hoopMode.addEventListener("click", () => setMode("hoop"));
+    els.resetBtn.addEventListener("click", () => {
+      playSfx("click");
+      if (rosterCount() === 0) resetDraft();
+      else els.confirmModal.classList.add("open");
+    });
+    els.cancelReset.addEventListener("click", () => {
+      playSfx("click");
+      els.confirmModal.classList.remove("open");
+    });
+    els.confirmReset.addEventListener("click", resetDraft);
+    els.confirmModal.addEventListener("click", event => {
+      if (event.target === els.confirmModal) els.confirmModal.classList.remove("open");
+    });
+
+    render();
+  </script>
+</body>
+</html>
