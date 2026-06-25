@@ -569,6 +569,30 @@
       margin-bottom: 12px;
     }
 
+    .position-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0 0 12px;
+    }
+
+    .filter-chip {
+      min-height: 30px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      color: var(--ink);
+      background: #eef2f1;
+      border: 1px solid rgba(16,21,31,0.12);
+      font-size: 0.72rem;
+      font-weight: 1000;
+    }
+
+    .filter-chip.active {
+      color: #fff;
+      background: linear-gradient(135deg, var(--ink), #303c51);
+      border-color: rgba(16,21,31,0.36);
+    }
+
     .hint {
       margin: 0;
       color: var(--muted);
@@ -580,6 +604,9 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 10px;
+      max-height: 670px;
+      overflow-y: auto;
+      padding-right: 4px;
     }
 
     .player-card {
@@ -613,6 +640,19 @@
       border-color: rgba(29,154,145,0.68);
       box-shadow: 0 12px 24px rgba(18,20,25,0.12);
       outline: none;
+    }
+
+    .player-card.unavailable {
+      opacity: 0.46;
+      filter: grayscale(0.28);
+      cursor: not-allowed;
+    }
+
+    .player-card.unavailable:hover,
+    .player-card.unavailable:focus-visible {
+      transform: none;
+      border-color: rgba(18,20,25,0.12);
+      box-shadow: none;
     }
 
     .player-top {
@@ -712,6 +752,17 @@
       color: #0d6b66;
       font-size: 0.67rem;
       font-weight: 900;
+    }
+
+    .tag.unavailable {
+      color: #8e4a43;
+      background: rgba(200,77,85,0.16);
+      text-decoration: line-through;
+    }
+
+    .tag.available {
+      color: #0d6b66;
+      background: rgba(19,168,158,0.16);
     }
 
     .hidden-line {
@@ -1298,6 +1349,7 @@
               </div>
               <span class="badge" id="modeBadge">Stats visible</span>
             </div>
+            <div class="position-filter" id="positionFilter" aria-label="Filter player board by position"></div>
             <div id="choices" class="player-grid">
               <div class="empty-state">No board yet.</div>
             </div>
@@ -1313,7 +1365,7 @@
             </div>
             <div class="how-item">
               <strong>Build 6</strong>
-              <p>Fill PG, SG, SF, PF, C, and 6th man. Players can only move to positions they actually fit.</p>
+              <p>Fill PG, SG, SF, PF, C, and 6th man. Use the position filters to find the slot you need.</p>
             </div>
             <div class="how-item">
               <strong>Use skips</strong>
@@ -1814,7 +1866,6 @@
     const POSITIONS = ["PG", "SG", "SF", "PF", "C", "6th"];
     const STARTER_POSITIONS = POSITIONS.slice(0, 5);
     const SLOT_WEIGHTS = [1, 0.97, 0.94, 0.9, 0.86, 0.62];
-    const CHOICE_COUNT = 6;
     const MIN_ROLL_CHOICES = 4;
     const POSITION_OVERRIDES = {
       "LeBron James": ["PG", "SG", "SF", "PF", "C"],
@@ -1944,6 +1995,7 @@
       choiceTitle: document.getElementById("choiceTitle"),
       choiceHint: document.getElementById("choiceHint"),
       modeBadge: document.getElementById("modeBadge"),
+      positionFilter: document.getElementById("positionFilter"),
       choices: document.getElementById("choices"),
       rosterGrid: document.getElementById("rosterGrid"),
       ptsLabel: document.getElementById("ptsLabel"),
@@ -1979,6 +2031,7 @@
       teamSkips: 1,
       eraSkips: 1,
       mode: "classic",
+      positionFilter: "ALL",
       audioOn: false,
       sfxOn: true,
       runCount: 0,
@@ -2076,6 +2129,26 @@
       const starterSlot = state.roster.findIndex((item, index) => !item && canOccupy(player, index));
       if (starterSlot !== -1) return starterSlot;
       return state.roster.findIndex((item, index) => !item && index >= 5);
+    }
+
+    function openSlotForPosition(label) {
+      const index = POSITIONS.indexOf(label);
+      return index !== -1 && !state.roster[index] ? index : -1;
+    }
+
+    function canDraftToPosition(player, label) {
+      const index = openSlotForPosition(label);
+      return index !== -1 && canOccupy(player, index);
+    }
+
+    function playerAvailablePositions(player) {
+      return POSITIONS.filter(label => canDraftToPosition(player, label));
+    }
+
+    function canDraftPlayer(player, filter = state.positionFilter) {
+      if (!player) return false;
+      if (filter && filter !== "ALL") return canDraftToPosition(player, filter);
+      return firstOpenLegalSlot(player) !== -1;
     }
 
     function moveOptions(player, fromIndex) {
@@ -2204,11 +2277,7 @@
         !picked.has(player.id) &&
         !pickedNames.has(player.name)
       )));
-      const stars = shuffle(exact.filter(player => playerRating(player) >= 90)).slice(0, 2);
-      const regulars = shuffle(exact.filter(player => playerRating(player) < 90))
-        .sort((a, b) => ((playerRating(b) + Math.random() * 14) - (playerRating(a) + Math.random() * 14)));
-      const selected = uniqueByName([...stars, ...regulars]).slice(0, CHOICE_COUNT);
-      return shuffle(selected).slice(0, CHOICE_COUNT);
+      return exact.sort((a, b) => playerRating(b) - playerRating(a));
     }
 
     function playableCombos(list, minimum = MIN_ROLL_CHOICES) {
@@ -2268,17 +2337,27 @@
       rollSlot(weightedSample(options, comboRollWeight));
     }
 
-    function draftPlayer(id) {
+    function draftPlayer(id, desiredPosition = state.positionFilter) {
       if (rosterCount() >= ROSTER_SIZE) return;
       const player = PLAYERS.find(item => item.id === id);
       if (!player || state.roster.some(item => item && (item.id === id || item.name === player.name))) return;
-      const slot = firstOpenLegalSlot(player);
+      let slot = -1;
+      if (desiredPosition && desiredPosition !== "ALL") {
+        slot = canDraftToPosition(player, desiredPosition) ? POSITIONS.indexOf(desiredPosition) : -1;
+        if (slot === -1) {
+          showToast(`${player.name} cannot fill ${desiredPosition} right now.`);
+          return;
+        }
+      } else {
+        slot = firstOpenLegalSlot(player);
+      }
       if (slot === -1) {
         showToast(`No legal open spot for ${player.name}. Move someone first.`);
         return;
       }
       state.roster[slot] = player;
       state.currentRoll = null;
+      state.positionFilter = "ALL";
       state.sim = null;
       if (rosterCount() === ROSTER_SIZE) {
         showToast("Rotation full. Run the 10-year dynasty.");
@@ -2290,6 +2369,7 @@
     function resetDraft() {
       state.roster = Array(ROSTER_SIZE).fill(null);
       state.currentRoll = null;
+      state.positionFilter = "ALL";
       state.teamSkips = 1;
       state.eraSkips = 1;
       state.runCount = 0;
@@ -2689,6 +2769,7 @@
       updateMeters(profile);
       renderAudio();
       renderChoices();
+      renderPositionFilter();
       renderRoster();
       renderCourt();
       renderSeason();
@@ -2719,20 +2800,43 @@
       }
 
       const team = TEAMS[state.currentRoll.team];
-      const candidates = boardCandidates(state.currentRoll);
+      const allCandidates = boardCandidates(state.currentRoll);
+      const candidates = state.positionFilter === "ALL"
+        ? allCandidates
+        : allCandidates.filter(player => canOccupy(player, POSITIONS.indexOf(state.positionFilter)));
       els.choiceTitle.textContent = `${team.full} ${state.currentRoll.decade}`;
-      els.choiceHint.textContent = `${candidates.length} available ${candidates.length === 1 ? "player" : "players"}`;
-      els.choices.innerHTML = candidates.map(playerCard).join("");
+      const filterText = state.positionFilter === "ALL" ? "all positions" : state.positionFilter;
+      els.choiceHint.textContent = `${candidates.length} shown of ${allCandidates.length} players - ${filterText}`;
+      els.choices.innerHTML = candidates.length
+        ? candidates.map(playerCard).join("")
+        : `<div class="empty-state">No ${state.positionFilter} fits on this board. Try another position filter or use a skip.</div>`;
       els.choices.querySelectorAll(".player-card").forEach(card => {
-        card.addEventListener("click", () => draftPlayer(card.dataset.playerId));
+        card.addEventListener("click", () => draftPlayer(card.dataset.playerId, state.positionFilter));
+      });
+    }
+
+    function renderPositionFilter() {
+      const options = ["ALL", ...POSITIONS];
+      els.positionFilter.innerHTML = options.map(label => `
+        <button class="filter-chip ${state.positionFilter === label ? "active" : ""}" type="button" data-position="${label}">
+          ${label === "ALL" ? "All" : label}
+        </button>
+      `).join("");
+      els.positionFilter.querySelectorAll(".filter-chip").forEach(button => {
+        button.addEventListener("click", () => {
+          state.positionFilter = button.dataset.position;
+          playSfx("click");
+          render();
+        });
       });
     }
 
     function playerCard(player) {
       const team = TEAMS[player.team];
       const hidden = state.mode === "hoop";
+      const available = canDraftPlayer(player);
       return `
-        <button class="player-card" data-player-id="${player.id}" type="button" style="--accent:${team.color}">
+        <button class="player-card ${available ? "" : "unavailable"}" data-player-id="${player.id}" type="button" style="--accent:${team.color}" ${available ? "" : "disabled"}>
           <span class="sr-only">Draft ${player.name}</span>
           <span class="player-top">
             <span class="avatar" aria-hidden="true">${initials(player.name)}</span>
@@ -2754,11 +2858,18 @@
             </span>
           `}
           <span class="tag-row">
-            <span class="tag">${legalPositions(player).join("/")}</span>
+            ${POSITIONS.map(pos => positionChip(player, pos)).join("")}
             ${player.tags.map(tag => `<span class="tag">${tag}</span>`).join("")}
           </span>
         </button>
       `;
+    }
+
+    function positionChip(player, pos) {
+      const legal = canOccupy(player, POSITIONS.indexOf(pos));
+      if (!legal) return "";
+      const open = canDraftToPosition(player, pos);
+      return `<span class="tag ${open ? "available" : "unavailable"}">${pos}</span>`;
     }
 
     function statCell(label, value) {
