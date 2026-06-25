@@ -2528,7 +2528,7 @@
       els.remainingBadge.textContent = `${ROSTER_SIZE - filled} picks left`;
       els.teamReel.textContent = state.currentRoll ? TEAMS[state.currentRoll.team].full : (filled >= ROSTER_SIZE ? "Locked" : "Ready");
       els.eraReel.textContent = state.currentRoll ? state.currentRoll.decade : (filled >= ROSTER_SIZE ? "Dynasty" : "Roll");
-      els.rollBtn.disabled = filled >= ROSTER_SIZE;
+      els.rollBtn.disabled = filled >= ROSTER_SIZE || Boolean(state.currentRoll);
       els.simulateBtn.disabled = filled < ROSTER_SIZE;
       els.teamSkipBtn.disabled = !state.currentRoll || state.teamSkips <= 0 || filled >= ROSTER_SIZE;
       els.eraSkipBtn.disabled = !state.currentRoll || state.eraSkips <= 0 || filled >= ROSTER_SIZE;
