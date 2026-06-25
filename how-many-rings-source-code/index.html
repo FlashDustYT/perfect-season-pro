@@ -93,9 +93,6 @@
     body:not(.light-theme) .filter-chip,
     body:not(.light-theme) .pos-chip,
     body:not(.light-theme) .move-chip,
-    body:not(.light-theme) .audio-btn,
-    body:not(.light-theme) .theme-btn,
-    body:not(.light-theme) .creator-chip,
     body:not(.light-theme) .top-pill {
       color: var(--ink);
       background: rgba(245,239,229,0.08);
@@ -103,8 +100,7 @@
     }
 
     body:not(.light-theme) .filter-chip.active,
-    body:not(.light-theme) .secondary-btn,
-    body:not(.light-theme) .mode-toggle button.active {
+    body:not(.light-theme) .secondary-btn {
       color: #0d141f;
       background: linear-gradient(135deg, #f5efe5, #d8c48f);
     }
@@ -193,12 +189,12 @@
     }
 
     body.light-theme .brand small,
+    body.light-theme .presented-by,
     body.light-theme .top-pill span {
       color: rgba(19,24,32,0.68);
     }
 
     body.light-theme .top-pill,
-    body.light-theme .creator-chip,
     body.light-theme .audio-btn {
       color: var(--ink);
       background: rgba(255,255,255,0.72);
@@ -303,6 +299,44 @@
       letter-spacing: 0;
     }
 
+    .presented-by {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      padding: 5px 8px 5px 5px;
+      color: rgba(247,241,227,0.86);
+      background:
+        linear-gradient(135deg, rgba(232,187,71,0.18), rgba(19,168,158,0.12)),
+        rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 999px;
+      font-size: 0.66rem;
+      font-weight: 1000;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .presented-by b {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      color: #10151f;
+      background: linear-gradient(135deg, #fff4b8, var(--gold));
+      border-radius: 50%;
+      font-size: 0.62rem;
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.12);
+    }
+
+    body:not(.light-theme) .presented-by {
+      color: #f8f1e6;
+      background:
+        linear-gradient(135deg, rgba(232,187,71,0.18), rgba(19,168,158,0.12)),
+        rgba(245,239,229,0.06);
+      border-color: rgba(245,239,229,0.14);
+    }
+
     .mode-toggle {
       display: grid;
       grid-template-columns: repeat(3, minmax(86px, 1fr));
@@ -325,6 +359,21 @@
       color: var(--ink);
       background: var(--paper);
       box-shadow: 0 8px 18px rgba(0,0,0,0.14);
+    }
+
+    .mode-toggle button.active.classic-active {
+      color: #0d141f;
+      background: linear-gradient(135deg, #f5efe5, #d8c48f);
+    }
+
+    .mode-toggle button.active.hoop-active {
+      color: #1d1602;
+      background: linear-gradient(135deg, #ffe986, #e8bb47);
+    }
+
+    .mode-toggle button.active.hard-active {
+      color: #fff7f2;
+      background: linear-gradient(135deg, #d94f5c, #8f2632);
     }
 
     .audio-btn {
@@ -357,6 +406,85 @@
       text-transform: uppercase;
     }
 
+    .utility-audio {
+      color: #091826;
+      background: linear-gradient(135deg, #9ed7ff, #4f8fca);
+      border-color: rgba(79,143,202,0.56);
+    }
+
+    .utility-theme {
+      color: #231806;
+      background: linear-gradient(135deg, #fff3bf, #dba85b);
+      border-color: rgba(219,168,91,0.62);
+    }
+
+    .utility-ovr {
+      color: #14101f;
+      background: linear-gradient(135deg, #cfc3ff, #7c65b8);
+      border-color: rgba(124,101,184,0.62);
+    }
+
+    .utility-modes {
+      color: #051916;
+      background: linear-gradient(135deg, #9be9de, #13a89e);
+      border-color: rgba(19,168,158,0.62);
+    }
+
+    .challenge-menu {
+      position: relative;
+    }
+
+    .challenge-list {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      z-index: 12;
+      width: 190px;
+      display: none;
+      gap: 6px;
+      padding: 8px;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .challenge-menu.open .challenge-list {
+      display: grid;
+    }
+
+    .challenge-list button {
+      min-height: 34px;
+      padding: 8px 10px;
+      color: var(--ink);
+      background: rgba(19,168,158,0.1);
+      border: 1px solid rgba(19,168,158,0.16);
+      border-radius: 7px;
+      font-size: 0.72rem;
+      font-weight: 1000;
+      text-align: left;
+    }
+
+    .challenge-list button.active {
+      color: #061b12;
+      background: linear-gradient(135deg, #9bf0bc, #39c477);
+      border-color: rgba(57,196,119,0.72);
+    }
+
+    .help-btn {
+      width: 42px;
+      min-height: 42px;
+      display: inline-grid;
+      place-items: center;
+      color: #10151f;
+      background: linear-gradient(135deg, #ffffff, #e8bb47);
+      border: 1px solid rgba(232,187,71,0.68);
+      border-radius: 50%;
+      font-size: 1.08rem;
+      font-weight: 1000;
+      box-shadow: 0 10px 22px rgba(232,187,71,0.18);
+    }
+
     body.light-theme .theme-btn {
       color: var(--ink);
       background: rgba(255,255,255,0.72);
@@ -368,33 +496,6 @@
       justify-content: flex-end;
       gap: 8px;
       flex-wrap: wrap;
-    }
-
-    .creator-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 42px;
-      padding: 7px 10px;
-      color: var(--paper);
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: var(--radius);
-      font-size: 0.72rem;
-      font-weight: 1000;
-      text-transform: uppercase;
-    }
-
-    .creator-chip b {
-      display: grid;
-      width: 28px;
-      height: 28px;
-      place-items: center;
-      color: var(--ink);
-      background: var(--paper);
-      border-radius: 50%;
-      font-size: 0.64rem;
-      line-height: 1;
     }
 
     .top-pill {
@@ -1277,6 +1378,7 @@
       justify-content: center;
       padding: 18px;
       background: rgba(13, 17, 21, 0.58);
+      backdrop-filter: blur(8px);
     }
 
     .modal.open {
@@ -1305,6 +1407,35 @@
       gap: 8px;
       flex-wrap: wrap;
       margin-top: 16px;
+    }
+
+    .help-sheet {
+      width: min(760px, calc(100vw - 28px));
+    }
+
+    .help-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .help-head h2 {
+      margin: 0;
+    }
+
+    .help-modal .how-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .help-modal .how-item {
+      background: rgba(255,253,248,0.9);
+    }
+
+    body:not(.light-theme) .help-modal .how-item {
+      background: rgba(245,239,229,0.08);
+      border-color: rgba(245,239,229,0.14);
     }
 
     .sr-only {
@@ -1406,11 +1537,22 @@
       }
 
       .top-pill,
-      .creator-chip,
       .audio-btn,
-      .theme-btn {
+      .theme-btn,
+      .challenge-menu,
+      .help-btn {
         min-width: 0;
         width: 100%;
+      }
+
+      .help-btn {
+        border-radius: var(--radius);
+      }
+
+      .challenge-list {
+        left: 0;
+        right: auto;
+        width: min(260px, 100%);
       }
 
       .action-row,
@@ -1442,6 +1584,10 @@
       .schedule-strip {
         grid-template-columns: repeat(10, 1fr);
       }
+
+      .help-modal .how-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -1453,6 +1599,7 @@
         <div>
           <h1>How Many Rings?</h1>
           <small>10-year title window</small>
+          <span class="presented-by"><b>FDC</b> Presented by FlashDust</span>
         </div>
       </div>
 
@@ -1463,13 +1610,21 @@
       </div>
 
       <div class="top-stats" aria-label="Draft status">
-        <div class="creator-chip" aria-label="FlashDust Presents">
-          <b>FDC</b>
-          <span>FlashDust Presents</span>
+        <button class="audio-btn utility-audio" id="audioBtn" type="button" aria-pressed="false">Audio off</button>
+        <button class="theme-btn utility-theme" id="themeBtn" type="button" aria-pressed="false">Light</button>
+        <button class="theme-btn utility-ovr" id="ratingBtn" type="button" aria-pressed="false">OVR off</button>
+        <button class="help-btn" id="helpBtn" type="button" aria-label="How to play">!</button>
+        <div class="challenge-menu" id="challengeMenu">
+          <button class="theme-btn utility-modes" id="challengeBtn" type="button" aria-expanded="false">Modes</button>
+          <div class="challenge-list" id="challengeList" aria-label="Challenge modes">
+            <button type="button" data-challenge="noSkips">No skips</button>
+            <button type="button" data-challenge="hardCap">Hard cap</button>
+            <button type="button" data-challenge="noMvps">No MVPs</button>
+            <button type="button" data-challenge="defenseOnly">Defense only</button>
+            <button type="button" data-challenge="modernOnly">Modern only</button>
+            <button type="button" data-challenge="oldSchoolOnly">Old school</button>
+          </div>
         </div>
-        <button class="audio-btn" id="audioBtn" type="button" aria-pressed="false">Audio off</button>
-        <button class="theme-btn" id="themeBtn" type="button" aria-pressed="false">Light</button>
-        <button class="theme-btn" id="ratingBtn" type="button" aria-pressed="false">OVR off</button>
         <div class="top-pill">
           <span>Round</span>
           <strong id="roundTop">1/6</strong>
@@ -1607,27 +1762,6 @@
           </section>
         </div>
 
-        <section class="how-play" aria-label="How to play">
-          <h2>How to play</h2>
-          <div class="how-grid">
-            <div class="how-item">
-              <strong>Roll</strong>
-              <p>Each round gives you one random franchise and era. Pick one player from that board for your rotation.</p>
-            </div>
-            <div class="how-item">
-              <strong>Build 6</strong>
-              <p>Fill PG, SG, SF, PF, C, and 6th man. Use the position filters to find the slot you need.</p>
-            </div>
-            <div class="how-item">
-              <strong>Use skips</strong>
-              <p>You get one team skip and one era skip per draft. Weaker eras show up more often, so use them carefully.</p>
-            </div>
-            <div class="how-item">
-              <strong>Run dynasty</strong>
-              <p>After six picks, simulate 10 years. Your result is how many rings and Finals trips the team wins.</p>
-            </div>
-          </div>
-        </section>
       </section>
 
       <aside class="roster-panel" aria-label="Roster">
@@ -1683,10 +1817,37 @@
     </main>
   </div>
 
+  <div class="modal help-modal" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="howTitle">
+    <div class="modal-sheet help-sheet">
+      <div class="help-head">
+        <h2 id="howTitle">How to play</h2>
+        <button class="ghost-btn compact" id="closeHelp" type="button">Close</button>
+      </div>
+      <div class="how-grid">
+        <div class="how-item">
+          <strong id="howOneTitle">Roll</strong>
+          <p id="howOneText">Each round gives you one random franchise and era. Pick one player from that board for your rotation.</p>
+        </div>
+        <div class="how-item">
+          <strong id="howTwoTitle">Build 6</strong>
+          <p id="howTwoText">Fill PG, SG, SF, PF, C, and 6th man. Use the position filters to find the slot you need.</p>
+        </div>
+        <div class="how-item">
+          <strong id="howThreeTitle">Use skips</strong>
+          <p id="howThreeText">You get one team skip and one era skip per draft. Weaker eras show up more often, so use them carefully.</p>
+        </div>
+        <div class="how-item">
+          <strong id="howFourTitle">Run dynasty</strong>
+          <p id="howFourText">After six picks, simulate 10 years. Your result is how many rings and Finals trips the team wins.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal-sheet">
       <h2 id="modalTitle">Start a new draft?</h2>
-      <p>This clears the current roster and rolls. Your best result stays saved in this browser.</p>
+      <p id="modalText">This clears the current roster and rolls. Your best result stays saved in this browser.</p>
       <div class="modal-actions">
         <button class="ghost-btn" id="cancelReset" type="button">Keep roster</button>
         <button class="danger-btn" id="confirmReset" type="button">New draft</button>
@@ -2151,7 +2312,7 @@
     const REAL_DEPTH_NAMES = {
       Jazz: ["Jeff Hornacek", "Bryon Russell", "Jeff Malone", "Mark Eaton", "Greg Ostertag", "Howard Eisley", "Shandon Anderson", "Antoine Carr", "Adam Keefe", "Blue Edwards"],
       Lakers: ["Gail Goodrich", "Norm Nixon", "Michael Cooper", "Byron Scott", "A.C. Green", "Lamar Odom", "Derek Fisher", "Robert Horry", "Rick Fox", "Trevor Ariza", "Austin Reaves", "Rui Hachimura"],
-      Celtics: ["Sam Jones", "Tom Heinsohn", "Jo Jo White", "Dennis Johnson", "Robert Parish", "Danny Ainge", "Cedric Maxwell", "Marcus Smart", "Al Horford", "Derrick White", "Kristaps Porzingis"],
+      Celtics: ["Sam Jones", "Tom Heinsohn", "Jo Jo White", "Cedric Maxwell", "M.L. Carr", "Robert Parish", "Dennis Johnson", "Danny Ainge", "Bill Walton", "Marcus Smart", "Al Horford", "Derrick White", "Kristaps Porzingis"],
       Bulls: ["Horace Grant", "B.J. Armstrong", "Bill Cartwright", "Ron Harper", "Toni Kukoc", "Luc Longley", "Steve Kerr", "Derrick Rose", "Joakim Noah", "Luol Deng"],
       Warriors: ["Nate Thurmond", "Chris Mullin", "Tim Hardaway", "Latrell Sprewell", "Baron Davis", "Monta Ellis", "Klay Thompson", "Draymond Green", "Andre Iguodala", "Andrew Wiggins", "Jordan Poole", "Kevon Looney"],
       Spurs: ["George Gervin", "James Silas", "Sean Elliott", "Avery Johnson", "Tony Parker", "Manu Ginobili", "Bruce Bowen", "Robert Horry", "Kawhi Leonard", "Danny Green", "Dejounte Murray"],
@@ -2180,6 +2341,87 @@
       Pacers: ["Mel Daniels", "Roger Brown", "George McGinnis", "Rik Smits", "Mark Jackson", "Dale Davis", "Jermaine O'Neal", "Danny Granger", "Roy Hibbert", "Myles Turner", "Bennedict Mathurin"],
       Grizzlies: ["Shareef Abdur-Rahim", "Mike Bibby", "Pau Gasol", "Mike Miller", "Shane Battier", "Jason Williams", "Marc Gasol", "Zach Randolph", "Tony Allen", "Dillon Brooks", "Steven Adams"]
     };
+    const DEPTH_NAME_DECADES = {
+      "Sam Jones": ["1960s"],
+      "Tom Heinsohn": ["1960s"],
+      "Jo Jo White": ["1960s", "1970s"],
+      "K.C. Jones": ["1960s"],
+      "Satch Sanders": ["1960s"],
+      "Bailey Howell": ["1960s"],
+      "Don Nelson": ["1960s", "1970s"],
+      "Frank Ramsey": ["1960s"],
+      "Larry Siegfried": ["1960s"],
+      "Clyde Lovellette": ["1960s"],
+      "Willie Naulls": ["1960s"],
+      "Jim Loscutoff": ["1960s"],
+      "Paul Silas": ["1970s"],
+      "Don Chaney": ["1970s"],
+      "Charlie Scott": ["1970s"],
+      "Paul Westphal": ["1970s"],
+      "Curtis Rowe": ["1970s"],
+      "Hank Finkel": ["1970s"],
+      "Kevin Stacom": ["1970s"],
+      "Cedric Maxwell": ["1970s", "1980s"],
+      "M.L. Carr": ["1970s", "1980s"],
+      "Bill Walton": ["1980s"],
+      "Robert Parish": ["1980s", "1990s"],
+      "Dennis Johnson": ["1980s"],
+      "Danny Ainge": ["1980s"],
+      "Scott Wedman": ["1980s"],
+      "Jerry Sichting": ["1980s"],
+      "Rick Carlisle": ["1980s"],
+      "Greg Kite": ["1980s"],
+      "Quinn Buckner": ["1980s"],
+      "Paul Pierce": ["1990s", "2000s"],
+      "Antoine Walker": ["1990s", "2000s"],
+      "Rajon Rondo": ["2000s", "2010s"],
+      "Tony Allen": ["2000s"],
+      "Kendrick Perkins": ["2000s", "2010s"],
+      "James Posey": ["2000s"],
+      "Eddie House": ["2000s"],
+      "Leon Powe": ["2000s"],
+      "Wally Szczerbiak": ["2000s"],
+      "Brian Scalabrine": ["2000s"],
+      "Glen Davis": ["2000s", "2010s"],
+      "Jrue Holiday": ["2020s"],
+      "Payton Pritchard": ["2020s"],
+      "Sam Hauser": ["2020s"],
+      "Luke Kornet": ["2020s"],
+      "Grant Williams": ["2010s", "2020s"],
+      "Robert Williams III": ["2010s", "2020s"],
+      "Malcolm Brogdon": ["2020s"],
+      "Marcus Smart": ["2010s", "2020s"],
+      "Al Horford": ["2010s", "2020s"],
+      "Derrick White": ["2020s"],
+      "Kristaps Porzingis": ["2020s"]
+    };
+    const EXTRA_DEPTH_NAMES = {
+      Celtics: ["K.C. Jones", "Satch Sanders", "Bailey Howell", "Don Nelson", "Frank Ramsey", "Larry Siegfried", "Clyde Lovellette", "Willie Naulls", "Jim Loscutoff", "Paul Silas", "Don Chaney", "Charlie Scott", "Paul Westphal", "Curtis Rowe", "Hank Finkel", "Kevin Stacom", "Scott Wedman", "Jerry Sichting", "Rick Carlisle", "Greg Kite", "Quinn Buckner", "Paul Pierce", "Antoine Walker", "Rajon Rondo", "Tony Allen", "Kendrick Perkins", "James Posey", "Eddie House", "Leon Powe", "Wally Szczerbiak", "Brian Scalabrine", "Glen Davis", "Jrue Holiday", "Payton Pritchard", "Sam Hauser", "Luke Kornet", "Grant Williams", "Robert Williams III", "Malcolm Brogdon"],
+      Hawks: ["Cliff Hagan", "Zelmo Beaty", "Bill Bridges", "Doc Rivers", "Spud Webb", "Steve Smith", "Christian Laettner", "Dikembe Mutombo", "Trae Young", "Dejounte Murray", "Bogdan Bogdanovic", "Clint Capela"],
+      Warriors: ["Paul Arizin", "Tom Gola", "Jeff Mullins", "Phil Smith", "Purvis Short", "Sleepy Floyd", "Jason Richardson", "David Lee", "Harrison Barnes", "Shaun Livingston"],
+      Nuggets: ["Dan Issel", "David Thompson", "Bobby Jones", "Calvin Natt", "TR Dunn", "J.R. Smith", "Kenyon Martin", "Andre Miller", "Arron Afflalo", "Will Barton", "Gary Harris"],
+      Clippers: ["Swen Nater", "Marques Johnson", "Norm Nixon", "Ron Harper", "Loy Vaught", "Sam Cassell", "Cuttino Mobley", "Nicolas Batum", "Terance Mann"],
+      Suns: ["Paul Westphal", "Alvan Adams", "Gar Heard", "Dick Van Arsdale", "Jason Kidd", "Rex Chapman", "Leandro Barbosa", "Boris Diaw", "Cam Johnson"],
+      Wizards: ["Earl Monroe", "Gus Johnson", "Bob Dandridge", "Michael Adams", "Rod Strickland", "Larry Hughes", "Marcin Gortat", "Kyle Kuzma", "Deni Avdija"],
+      Lakers: ["Elgin Baylor", "Jerry West", "Wilt Chamberlain", "Happy Hairston", "Jamaal Wilkes", "Mychal Thompson", "Rick Fox", "Kentavious Caldwell-Pope"],
+      Bucks: ["Oscar Robertson", "Brian Winters", "Junior Bridgeman", "Ricky Pierce", "Sam Cassell", "Vin Baker", "Toni Kukoc", "Bobby Portis", "Pat Connaughton"],
+      Sixers: ["Dolph Schayes", "Billy Cunningham", "Bobby Jones", "Darryl Dawkins", "Mo Cheeks", "Aaron McKie", "Eric Snow", "George Lynch", "JJ Redick", "Danny Green", "De'Anthony Melton"],
+      Kings: ["Jerry Lucas", "Jack Twyman", "Wayne Embry", "Otis Birdsong", "Scott Wedman", "Bobby Jackson", "Brad Miller", "Jason Williams", "Buddy Hield", "Malik Monk"],
+      Spurs: ["Artis Gilmore", "Larry Kenon", "Mike Mitchell", "Johnny Moore", "Terry Cummings", "Boris Diaw", "Patty Mills", "Tiago Splitter", "LaMarcus Aldridge", "Keldon Johnson"],
+      Pistons: ["Dave Bing", "Bob Lanier", "John Long", "Rick Mahorn", "James Edwards", "Lindsey Hunter", "Corliss Williamson", "Mehmet Okur", "Antonio McDyess"],
+      Mavericks: ["Sam Perkins", "Roy Tarpley", "Jim Jackson", "Antawn Jamison", "Antoine Walker", "Devin Harris", "Tyson Chandler", "J.J. Barea", "Jalen Brunson"],
+      Magic: ["Anfernee Hardaway", "Scott Skiles", "Bo Outlaw", "Pat Garrity", "Ryan Anderson", "Mickael Pietrus", "Aaron Gordon", "Evan Fournier", "Franz Wagner"],
+      Pelicans: ["P.J. Brown", "Elden Campbell", "Jamal Magloire", "Peja Stojakovic", "Emeka Okafor", "Trevor Ariza", "Eric Gordon", "Lonzo Ball", "Jonas Valanciunas"],
+      Blazers: ["Bill Walton", "Maurice Lucas", "Lionel Hollins", "Geoff Petrie", "Mychal Thompson", "Kiki Vandeweghe", "Steve Smith", "Arvydas Sabonis", "Wesley Matthews", "Anfernee Simons"],
+      Grizzlies: ["Bryant Reeves", "Tony Massenburg", "Stromile Swift", "Bonzi Wells", "James Posey", "Tony Allen", "Rudy Gay", "Jaren Jackson Jr.", "Desmond Bane"]
+    };
+
+    Object.entries(EXTRA_DEPTH_NAMES).forEach(([team, names]) => {
+      if (!REAL_DEPTH_NAMES[team]) REAL_DEPTH_NAMES[team] = [];
+      names.forEach(name => {
+        if (!REAL_DEPTH_NAMES[team].includes(name)) REAL_DEPTH_NAMES[team].push(name);
+      });
+    });
 
     function addEraDepthPlayers(targetSize = 12) {
       const combos = new Map();
@@ -2192,7 +2434,7 @@
       combos.forEach((players, key) => {
         const [team, decade] = key.split("|");
         const usedNames = new Set(players.map(player => player.name));
-        const depthNames = REAL_DEPTH_NAMES[team] || [];
+        const depthNames = eraDepthNames(team, decade, usedNames);
         let index = 0;
         while (players.length < targetSize) {
           const realName = depthNames.find(name => !usedNames.has(name));
@@ -2220,6 +2462,42 @@
           index += 1;
         }
       });
+    }
+
+    function decadeStart(decade) {
+      return Number(decade.slice(0, 4));
+    }
+
+    function eraDepthNames(team, decade, usedNames) {
+      const names = REAL_DEPTH_NAMES[team] || [];
+      const targetYear = decadeStart(decade);
+      const strict = names.filter((name, index) => {
+        if (usedNames.has(name)) return false;
+        if (DEPTH_NAME_DECADES[name]) return DEPTH_NAME_DECADES[name].includes(decade);
+        const exactYears = PLAYERS
+          .filter(player => player.name === name && player.team === team && !player.generated)
+          .map(player => decadeStart(player.decade));
+        if (exactYears.length) {
+          return exactYears.some(year => Math.abs(year - targetYear) <= 20);
+        }
+        const ratio = names.length <= 1 ? 0 : index / (names.length - 1);
+        const estimatedPeak = 1965 + ratio * 60;
+        return Math.abs(estimatedPeak - (targetYear + 5)) <= 25;
+      });
+      if (strict.length >= 12) return strict;
+
+      const relaxed = names.filter(name => {
+        if (usedNames.has(name) || strict.includes(name)) return false;
+        if (DEPTH_NAME_DECADES[name]) return DEPTH_NAME_DECADES[name].includes(decade);
+        const exactYears = PLAYERS
+          .filter(player => player.name === name && player.team === team && !player.generated)
+          .map(player => decadeStart(player.decade));
+        if (exactYears.length) {
+          return exactYears.some(year => Math.abs(year - targetYear) <= 30);
+        }
+        return true;
+      });
+      return [...strict, ...relaxed];
     }
 
     addEraDepthPlayers(12);
@@ -2327,6 +2605,52 @@
       "Penny Hardaway", "Yao Ming", "Dwight Howard", "Alonzo Mourning", "Blake Griffin",
       "Pau Gasol", "Marc Gasol"
     ]);
+    const MVP_NAMES = new Set([
+      "Kareem Abdul-Jabbar", "Bill Russell", "Wilt Chamberlain", "Oscar Robertson", "Bob Pettit",
+      "Jerry West", "Willis Reed", "Dave Cowens", "Bob McAdoo", "Julius Erving", "Moses Malone",
+      "Magic Johnson", "Larry Bird", "Michael Jordan", "Hakeem Olajuwon", "David Robinson",
+      "Karl Malone", "Shaquille O'Neal", "Allen Iverson", "Tim Duncan", "Kevin Garnett",
+      "Steve Nash", "Dirk Nowitzki", "Kobe Bryant", "LeBron James", "Derrick Rose",
+      "Kevin Durant", "Stephen Curry", "Russell Westbrook", "James Harden", "Giannis Antetokounmpo",
+      "Nikola Jokic", "Joel Embiid"
+    ]);
+    const CHALLENGE_LABELS = {
+      noSkips: "No skips",
+      hardCap: "Hard cap",
+      noMvps: "No MVPs",
+      defenseOnly: "Defense only",
+      modernOnly: "Modern only",
+      oldSchoolOnly: "Old school"
+    };
+    const HOW_TO_PLAY = {
+      classic: {
+        title: "How to play Classic",
+        items: [
+          ["Read the board", "Classic shows stats, tags, eligible positions, and optional OVR. Compare PTS, REB, AST, STL, and BLK before drafting."],
+          ["Build the rotation", "Fill PG, SG, SF, PF, C, and 6th. The green chip on your roster shows the spot that player is actually playing."],
+          ["Use skips wisely", "You get one team skip and one era skip. Bad eras appear more often, so save skips for boards that do not fit your needs."],
+          ["Run the dynasty", "After six picks, simulate 10 years. Stats, depth, balance, defense, and chemistry decide rings and Finals trips."]
+        ]
+      },
+      hoop: {
+        title: "How to play HoopIQ",
+        items: [
+          ["Draft by feel", "HoopIQ hides the stat line, so you are judging names, team era, tags, and basketball fit instead of raw numbers."],
+          ["Trust positions", "Official positions still matter. Use the position filter when you need a specific slot and move flexible players around later."],
+          ["Read the clues", "Tags like creator, defense, glass, or shooter are your hints. A balanced six-man group usually beats just grabbing names."],
+          ["Reveal in results", "The dynasty sim still uses the real stat profile underneath, but the draft itself is more memory and hoops instinct."]
+        ]
+      },
+      hardcore: {
+        title: "How to play Hardcore",
+        items: [
+          ["Harder rolls", "Hardcore makes weak teams and rough eras show up more often, so easy superteams are much less common."],
+          ["Hidden info", "Stats are hidden while drafting. OVR can still be toggled, but the mode is built around tougher, lower-info decisions."],
+          ["Stack modes", "Use the Modes dropdown for extra rules like No MVPs, Defense only, No skips, Hard cap, Modern only, or Old school."],
+          ["Win ugly", "Chemistry, role balance, and depth matter more here. A smart fit can outperform a messy roster with bigger names."]
+        ]
+      }
+    };
     const STAR_RATING_OVERRIDES = {
       "Michael Jordan": 99,
       "LeBron James": 99,
@@ -2406,6 +2730,10 @@
       audioBtn: document.getElementById("audioBtn"),
       themeBtn: document.getElementById("themeBtn"),
       ratingBtn: document.getElementById("ratingBtn"),
+      helpBtn: document.getElementById("helpBtn"),
+      challengeMenu: document.getElementById("challengeMenu"),
+      challengeBtn: document.getElementById("challengeBtn"),
+      challengeList: document.getElementById("challengeList"),
       roundTop: document.getElementById("roundTop"),
       recordTop: document.getElementById("recordTop"),
       powerTop: document.getElementById("powerTop"),
@@ -2451,9 +2779,22 @@
       resultNote: document.getElementById("resultNote"),
       scheduleStrip: document.getElementById("scheduleStrip"),
       leaders: document.getElementById("leaders"),
+      howTitle: document.getElementById("howTitle"),
+      howOneTitle: document.getElementById("howOneTitle"),
+      howOneText: document.getElementById("howOneText"),
+      howTwoTitle: document.getElementById("howTwoTitle"),
+      howTwoText: document.getElementById("howTwoText"),
+      howThreeTitle: document.getElementById("howThreeTitle"),
+      howThreeText: document.getElementById("howThreeText"),
+      howFourTitle: document.getElementById("howFourTitle"),
+      howFourText: document.getElementById("howFourText"),
+      helpModal: document.getElementById("helpModal"),
+      closeHelp: document.getElementById("closeHelp"),
       resimBtn: document.getElementById("resimBtn"),
       copyBtn: document.getElementById("copyBtn"),
       confirmModal: document.getElementById("confirmModal"),
+      modalTitle: document.getElementById("modalTitle"),
+      modalText: document.getElementById("modalText"),
       cancelReset: document.getElementById("cancelReset"),
       confirmReset: document.getElementById("confirmReset"),
       toast: document.getElementById("toast")
@@ -2467,6 +2808,10 @@
       mode: "classic",
       theme: localStorage.getItem("howManyRingsTheme") || "dark",
       showRatings: localStorage.getItem("howManyRingsShowRatings") === "true",
+      challenges: JSON.parse(localStorage.getItem("howManyRingsChallenges") || "{}"),
+      challengeOpen: false,
+      pendingMode: null,
+      confirmAction: "reset",
       positionFilter: "ALL",
       audioOn: false,
       sfxOn: true,
@@ -2695,12 +3040,31 @@
       return weakEraBoost * weakEraBoost * franchiseBoost * elitePenalty * roughEraOnGreatTeamBoost * scarcityBoost;
     }
 
+    function challengeActive(key) {
+      return Boolean(state.challenges[key]);
+    }
+
+    function playerMeetsChallenges(player) {
+      if (!player) return false;
+      if (challengeActive("modernOnly") && !["2000s", "2010s", "2020s"].includes(player.decade)) return false;
+      if (challengeActive("oldSchoolOnly") && !["1960s", "1970s", "1980s", "1990s"].includes(player.decade)) return false;
+      if (challengeActive("noMvps") && MVP_NAMES.has(player.name)) return false;
+      if (challengeActive("hardCap") && hallOfFameCount() >= 2 && isHallOfFameLevel(player)) return false;
+      if (challengeActive("defenseOnly")) {
+        const defenseTags = ["defense", "rim", "rim wall", "anchor", "glass", "steals", "blocks", "lockdown"];
+        const hasDefenseTag = player.tags.some(tag => defenseTags.includes(tag));
+        const hasDefenseStats = player.stl >= 1.4 || player.blk >= 1.3 || player.reb >= 9.5;
+        if (!hasDefenseTag && !hasDefenseStats) return false;
+      }
+      return true;
+    }
+
     function allAvailableCombos() {
       const picked = new Set(filledRoster().map(player => player.id));
       const pickedNames = new Set(filledRoster().map(player => player.name));
       const seen = new Set();
       return PLAYERS
-        .filter(player => !picked.has(player.id) && !pickedNames.has(player.name))
+        .filter(player => !picked.has(player.id) && !pickedNames.has(player.name) && playerMeetsChallenges(player))
         .map(player => ({ team: player.team, decade: player.decade }))
         .filter(combo => {
           const key = `${combo.team}|${combo.decade}`;
@@ -2714,7 +3078,7 @@
       const picked = new Set(filledRoster().map(player => player.id));
       const pickedNames = new Set(filledRoster().map(player => player.name));
       return PLAYERS
-        .filter(player => player.team === combo.team && player.decade === combo.decade && !picked.has(player.id) && !pickedNames.has(player.name))
+        .filter(player => player.team === combo.team && player.decade === combo.decade && !picked.has(player.id) && !pickedNames.has(player.name) && playerMeetsChallenges(player))
         .sort((a, b) => playerRating(b) - playerRating(a));
     }
 
@@ -2725,7 +3089,8 @@
         player.team === combo.team &&
         player.decade === combo.decade &&
         !picked.has(player.id) &&
-        !pickedNames.has(player.name)
+        !pickedNames.has(player.name) &&
+        playerMeetsChallenges(player)
       )));
       return exact.sort((a, b) => playerRating(b) - playerRating(a));
     }
@@ -2762,7 +3127,7 @@
     }
 
     function skipTeam() {
-      if (!state.currentRoll || state.teamSkips <= 0) return;
+      if (!state.currentRoll || state.teamSkips <= 0 || challengeActive("noSkips")) return;
       const options = playableCombos(allAvailableCombos().filter(combo => (
         combo.decade === state.currentRoll.decade && combo.team !== state.currentRoll.team
       )));
@@ -2775,7 +3140,7 @@
     }
 
     function skipEra() {
-      if (!state.currentRoll || state.eraSkips <= 0) return;
+      if (!state.currentRoll || state.eraSkips <= 0 || challengeActive("noSkips")) return;
       const options = playableCombos(allAvailableCombos().filter(combo => (
         combo.team === state.currentRoll.team && combo.decade !== state.currentRoll.decade
       )));
@@ -2827,6 +3192,47 @@
       els.confirmModal.classList.remove("open");
       playSfx("click");
       render();
+    }
+
+    function draftStarted() {
+      return rosterCount() > 0 || Boolean(state.currentRoll) || state.sim;
+    }
+
+    function openConfirm(action = "reset", mode = null) {
+      state.confirmAction = action;
+      state.pendingMode = mode;
+      if (action === "mode") {
+        const labels = { classic: "Classic", hoop: "HoopIQ", hardcore: "Hardcore" };
+        els.modalTitle.textContent = "Switch modes?";
+        els.modalText.textContent = `Switching to ${labels[mode] || "this mode"} will restart your current draft so the mode rules stay fair.`;
+        els.cancelReset.textContent = "Keep current game";
+        els.confirmReset.textContent = "Switch and restart";
+      } else {
+        els.modalTitle.textContent = "Start a new draft?";
+        els.modalText.textContent = "This clears the current roster and rolls. Your best result stays saved in this browser.";
+        els.cancelReset.textContent = "Keep roster";
+        els.confirmReset.textContent = "New draft";
+      }
+      els.confirmModal.classList.add("open");
+    }
+
+    function closeConfirm() {
+      state.pendingMode = null;
+      state.confirmAction = "reset";
+      els.confirmModal.classList.remove("open");
+    }
+
+    function confirmPendingAction() {
+      if (state.confirmAction === "mode" && state.pendingMode) {
+        const nextMode = state.pendingMode;
+        state.mode = nextMode;
+        resetDraft();
+        closeConfirm();
+        render();
+        return;
+      }
+      resetDraft();
+      closeConfirm();
     }
 
     function weightedRoster() {
@@ -3221,6 +3627,12 @@
     }
 
     function setMode(mode) {
+      if (mode === state.mode) return;
+      if (draftStarted()) {
+        openConfirm("mode", mode);
+        playSfx("click");
+        return;
+      }
       state.mode = mode;
       state.sim = null;
       playSfx("click");
@@ -3232,6 +3644,27 @@
       localStorage.setItem("howManyRingsShowRatings", String(state.showRatings));
       playSfx("click");
       render();
+    }
+
+    function toggleChallenge(key) {
+      state.challenges[key] = !state.challenges[key];
+      if (key === "modernOnly" && state.challenges[key]) state.challenges.oldSchoolOnly = false;
+      if (key === "oldSchoolOnly" && state.challenges[key]) state.challenges.modernOnly = false;
+      localStorage.setItem("howManyRingsChallenges", JSON.stringify(state.challenges));
+      state.currentRoll = null;
+      state.sim = null;
+      state.positionFilter = "ALL";
+      playSfx("click");
+      render();
+    }
+
+    function openHelp() {
+      renderHowToPlay();
+      els.helpModal.classList.add("open");
+    }
+
+    function closeHelp() {
+      els.helpModal.classList.remove("open");
     }
 
     function render() {
@@ -3249,8 +3682,8 @@
       els.eraReel.textContent = state.currentRoll ? state.currentRoll.decade : (filled >= ROSTER_SIZE ? "Dynasty" : "Roll");
       els.rollBtn.disabled = filled >= ROSTER_SIZE || Boolean(state.currentRoll);
       els.simulateBtn.disabled = filled < ROSTER_SIZE;
-      els.teamSkipBtn.disabled = !state.currentRoll || state.teamSkips <= 0 || filled >= ROSTER_SIZE;
-      els.eraSkipBtn.disabled = !state.currentRoll || state.eraSkips <= 0 || filled >= ROSTER_SIZE;
+      els.teamSkipBtn.disabled = !state.currentRoll || state.teamSkips <= 0 || filled >= ROSTER_SIZE || challengeActive("noSkips");
+      els.eraSkipBtn.disabled = !state.currentRoll || state.eraSkips <= 0 || filled >= ROSTER_SIZE || challengeActive("noSkips");
       els.teamSkips.textContent = state.teamSkips;
       els.eraSkips.textContent = state.eraSkips;
       els.depthMini.textContent = Math.round(profile.depth);
@@ -3259,15 +3692,20 @@
       els.classicMode.classList.toggle("active", state.mode === "classic");
       els.hoopMode.classList.toggle("active", state.mode === "hoop");
       els.hardMode.classList.toggle("active", state.mode === "hardcore");
+      els.classicMode.classList.toggle("classic-active", state.mode === "classic");
+      els.hoopMode.classList.toggle("hoop-active", state.mode === "hoop");
+      els.hardMode.classList.toggle("hard-active", state.mode === "hardcore");
       els.modeBadge.textContent = state.mode === "classic" ? "Stats focus" : state.mode === "hardcore" ? "Hardcore" : "Stats hidden";
       els.ratingBtn.textContent = state.showRatings ? "OVR on" : "OVR off";
       els.ratingBtn.setAttribute("aria-pressed", String(state.showRatings));
 
       renderTheme();
+      renderChallenges();
       updateMeters(profile);
       renderAudio();
       renderChoices();
       renderPositionFilter();
+      renderHowToPlay();
       renderRoster();
       renderCourt();
       renderSeason();
@@ -3327,6 +3765,31 @@
           playSfx("click");
           render();
         });
+      });
+    }
+
+    function renderChallenges() {
+      const activeKeys = Object.keys(CHALLENGE_LABELS).filter(key => challengeActive(key));
+      els.challengeMenu.classList.toggle("open", state.challengeOpen);
+      els.challengeBtn.setAttribute("aria-expanded", String(state.challengeOpen));
+      els.challengeBtn.textContent = activeKeys.length ? `Modes ${activeKeys.length}` : "Modes";
+      els.challengeList.querySelectorAll("button[data-challenge]").forEach(button => {
+        button.classList.toggle("active", challengeActive(button.dataset.challenge));
+      });
+    }
+
+    function renderHowToPlay() {
+      const guide = HOW_TO_PLAY[state.mode] || HOW_TO_PLAY.classic;
+      const fields = [
+        [els.howOneTitle, els.howOneText],
+        [els.howTwoTitle, els.howTwoText],
+        [els.howThreeTitle, els.howThreeText],
+        [els.howFourTitle, els.howFourText]
+      ];
+      els.howTitle.textContent = guide.title;
+      guide.items.forEach(([title, text], index) => {
+        fields[index][0].textContent = title;
+        fields[index][1].textContent = text;
       });
     }
 
@@ -3479,6 +3942,34 @@
     els.audioBtn.addEventListener("click", toggleAudio);
     els.themeBtn.addEventListener("click", toggleTheme);
     els.ratingBtn.addEventListener("click", toggleRatings);
+    els.helpBtn.addEventListener("click", openHelp);
+    els.helpBtn.addEventListener("mouseenter", openHelp);
+    els.helpBtn.addEventListener("focus", openHelp);
+    els.closeHelp.addEventListener("click", closeHelp);
+    els.helpModal.addEventListener("click", event => {
+      if (event.target === els.helpModal) closeHelp();
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") closeHelp();
+    });
+    els.challengeBtn.addEventListener("click", event => {
+      event.stopPropagation();
+      state.challengeOpen = !state.challengeOpen;
+      playSfx("click");
+      renderChallenges();
+    });
+    els.challengeList.querySelectorAll("button[data-challenge]").forEach(button => {
+      button.addEventListener("click", event => {
+        event.stopPropagation();
+        toggleChallenge(button.dataset.challenge);
+      });
+    });
+    document.addEventListener("click", event => {
+      if (!els.challengeMenu.contains(event.target) && state.challengeOpen) {
+        state.challengeOpen = false;
+        renderChallenges();
+      }
+    });
     document.addEventListener("pointerdown", event => {
       if (event.target.closest("button")) playSfx("click");
     }, { capture: true });
@@ -3494,15 +3985,15 @@
     els.resetBtn.addEventListener("click", () => {
       playSfx("click");
       if (rosterCount() === 0) resetDraft();
-      else els.confirmModal.classList.add("open");
+      else openConfirm("reset");
     });
     els.cancelReset.addEventListener("click", () => {
       playSfx("click");
-      els.confirmModal.classList.remove("open");
+      closeConfirm();
     });
-    els.confirmReset.addEventListener("click", resetDraft);
+    els.confirmReset.addEventListener("click", confirmPendingAction);
     els.confirmModal.addEventListener("click", event => {
-      if (event.target === els.confirmModal) els.confirmModal.classList.remove("open");
+      if (event.target === els.confirmModal) closeConfirm();
     });
 
     render();
