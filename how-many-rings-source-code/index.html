@@ -44,6 +44,171 @@
       color: var(--ink);
     }
 
+    body:not(.light-theme) {
+      --ink: #f5efe5;
+      --ink-2: #d9e0ea;
+      --paper: #101823;
+      --paper-2: #151f2d;
+      --line: rgba(245,239,229,0.14);
+      --muted: #aeb8c7;
+      --shadow: 0 20px 70px rgba(0,0,0,0.44);
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(245,239,229,0.04) 1px, transparent 1px) 0 0 / 48px 48px,
+        linear-gradient(rgba(245,239,229,0.035) 1px, transparent 1px) 0 0 / 48px 48px,
+        linear-gradient(135deg, #070b11 0%, #101826 45%, #241b15 100%);
+    }
+
+    body:not(.light-theme) .topbar,
+    body:not(.light-theme) .game {
+      color: #f5efe5;
+      background: rgba(10, 16, 24, 0.9);
+      border-color: rgba(245,239,229,0.12);
+    }
+
+    body:not(.light-theme) .stage,
+    body:not(.light-theme) .slot-panel,
+    body:not(.light-theme) .choices-panel,
+    body:not(.light-theme) .season-card,
+    body:not(.light-theme) .roster-panel,
+    body:not(.light-theme) .how-play {
+      color: var(--ink);
+      background: rgba(18, 27, 39, 0.96);
+      border-color: rgba(245,239,229,0.12);
+    }
+
+    body:not(.light-theme) .player-card,
+    body:not(.light-theme) .slot-card,
+    body:not(.light-theme) .mini-ledger div,
+    body:not(.light-theme) .how-item,
+    body:not(.light-theme) .leader-card {
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(30,42,58,0.96), rgba(18,27,39,0.96)),
+        #151f2d;
+      border-color: rgba(245,239,229,0.12);
+    }
+
+    body:not(.light-theme) .ghost-btn,
+    body:not(.light-theme) .filter-chip,
+    body:not(.light-theme) .pos-chip,
+    body:not(.light-theme) .move-chip,
+    body:not(.light-theme) .audio-btn,
+    body:not(.light-theme) .theme-btn,
+    body:not(.light-theme) .creator-chip,
+    body:not(.light-theme) .top-pill {
+      color: var(--ink);
+      background: rgba(245,239,229,0.08);
+      border-color: rgba(245,239,229,0.14);
+    }
+
+    body:not(.light-theme) .filter-chip.active,
+    body:not(.light-theme) .secondary-btn,
+    body:not(.light-theme) .mode-toggle button.active {
+      color: #0d141f;
+      background: linear-gradient(135deg, #f5efe5, #d8c48f);
+    }
+
+    body:not(.light-theme) .rating-chip,
+    body:not(.light-theme) .badge {
+      color: #0d141f;
+      background: #f5efe5;
+    }
+
+    body:not(.light-theme) .bar,
+    body:not(.light-theme) .reel {
+      border-color: rgba(245,239,229,0.12);
+    }
+
+    body:not(.light-theme) .reel span {
+      color: rgba(245,239,229,0.82);
+    }
+
+    body:not(.light-theme) .reel strong {
+      color: #f8f1e6;
+      text-shadow: 0 1px 0 rgba(0,0,0,0.28);
+    }
+
+    body:not(.light-theme) .stat,
+    body:not(.light-theme) .empty-state,
+    body:not(.light-theme) .hidden-line,
+    body:not(.light-theme) .slot-card.empty {
+      color: var(--muted);
+      background: rgba(245,239,229,0.06);
+      border-color: rgba(245,239,229,0.14);
+    }
+
+    body:not(.light-theme) .leader {
+      color: #f8f1e6;
+      background: rgba(245,239,229,0.08);
+      border-color: rgba(245,239,229,0.16);
+    }
+
+    body:not(.light-theme) .leader span,
+    body:not(.light-theme) .result-note,
+    body:not(.light-theme) .meter-label {
+      color: #cbd5e4;
+    }
+
+    body:not(.light-theme) .leader strong {
+      color: #fffaf0;
+    }
+
+    body:not(.light-theme) .tag {
+      color: #8ee2d9;
+      background: rgba(19,168,158,0.16);
+    }
+
+    body:not(.light-theme) .tag.unavailable {
+      color: #f0a09a;
+      background: rgba(200,77,85,0.2);
+    }
+
+    body:not(.light-theme) .pos-chip.current {
+      color: #04170e;
+      background: linear-gradient(135deg, #aaf7c7, #36d17a);
+      border-color: rgba(95,232,145,0.78);
+    }
+
+    body.light-theme {
+      --ink: #131820;
+      --ink-2: #273142;
+      --paper: #fff9ed;
+      --paper-2: #ffffff;
+      --line: rgba(19,24,32,0.13);
+      --muted: #5c6470;
+      --shadow: 0 16px 48px rgba(55,44,28,0.14);
+      background:
+        linear-gradient(90deg, rgba(19,24,32,0.045) 1px, transparent 1px) 0 0 / 48px 48px,
+        linear-gradient(rgba(19,24,32,0.04) 1px, transparent 1px) 0 0 / 48px 48px,
+        linear-gradient(135deg, #fbf6eb 0%, #f1e5d1 48%, #e8f0ee 100%);
+    }
+
+    body.light-theme .topbar {
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(232,187,71,0.18), transparent 38%),
+        rgba(255,255,255,0.74);
+      border-color: rgba(19,24,32,0.1);
+    }
+
+    body.light-theme .brand small,
+    body.light-theme .top-pill span {
+      color: rgba(19,24,32,0.68);
+    }
+
+    body.light-theme .top-pill,
+    body.light-theme .creator-chip,
+    body.light-theme .audio-btn {
+      color: var(--ink);
+      background: rgba(255,255,255,0.72);
+      border-color: rgba(19,24,32,0.12);
+    }
+
+    body.light-theme .top-pill strong {
+      color: var(--ink);
+    }
+
     button,
     input {
       font: inherit;
@@ -140,7 +305,7 @@
 
     .mode-toggle {
       display: grid;
-      grid-template-columns: repeat(2, minmax(96px, 1fr));
+      grid-template-columns: repeat(3, minmax(86px, 1fr));
       gap: 4px;
       padding: 4px;
       background: rgba(255,255,255,0.12);
@@ -178,6 +343,24 @@
       color: var(--ink);
       background: linear-gradient(135deg, #fff4b8, var(--gold));
       border-color: rgba(232,187,71,0.72);
+    }
+
+    .theme-btn {
+      min-height: 42px;
+      padding: 7px 10px;
+      color: var(--paper);
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: var(--radius);
+      font-size: 0.72rem;
+      font-weight: 1000;
+      text-transform: uppercase;
+    }
+
+    body.light-theme .theme-btn {
+      color: var(--ink);
+      background: rgba(255,255,255,0.72);
+      border-color: rgba(19,24,32,0.12);
     }
 
     .top-stats {
@@ -569,6 +752,21 @@
       margin-bottom: 12px;
     }
 
+    .board-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .danger-btn.compact {
+      min-height: 34px;
+      padding: 8px 10px;
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+
     .position-filter {
       display: flex;
       flex-wrap: wrap;
@@ -882,6 +1080,13 @@
       background: #ebe5d9;
     }
 
+    .pos-chip.current {
+      color: #061b12;
+      background: linear-gradient(135deg, #9bf0bc, #39c477);
+      border-color: rgba(57,196,119,0.72);
+      box-shadow: 0 0 0 1px rgba(57,196,119,0.18);
+    }
+
     .move-chip {
       color: #176b65;
       background: rgba(19,168,158,0.12);
@@ -955,10 +1160,10 @@
     .record {
       min-width: 96px;
       padding: 10px;
-      color: #fff;
+      color: #10151f;
       background:
-        linear-gradient(135deg, rgba(232,187,71,0.34), transparent 48%),
-        var(--ink);
+        linear-gradient(135deg, #fff4b8, #e8bb47);
+      border: 1px solid rgba(18,20,25,0.14);
       border-radius: var(--radius);
       text-align: center;
     }
@@ -967,10 +1172,11 @@
       display: block;
       font-size: 1.7rem;
       line-height: 1;
+      color: #10151f;
     }
 
     .record span {
-      color: rgba(255,255,255,0.68);
+      color: rgba(16,21,31,0.72);
       font-size: 0.68rem;
       font-weight: 900;
       text-transform: uppercase;
@@ -1122,7 +1328,7 @@
       }
 
       .mode-toggle {
-        max-width: 360px;
+        max-width: 520px;
       }
 
       .top-stats {
@@ -1136,11 +1342,21 @@
 
     @media (max-width: 720px) {
       .app {
-        padding: 10px;
+        padding: 8px;
       }
 
       .topbar {
         gap: 10px;
+      }
+
+      .draft-area {
+        padding: 10px;
+      }
+
+      .choices-panel,
+      .slot-panel,
+      .roster-panel {
+        padding: 10px;
       }
 
       .brand {
@@ -1166,6 +1382,35 @@
       .leaders,
       .how-grid {
         grid-template-columns: 1fr;
+      }
+
+      .player-grid {
+        max-height: none;
+        overflow: visible;
+        padding-right: 0;
+      }
+
+      .choices-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .board-actions {
+        justify-content: flex-start;
+        width: 100%;
+      }
+
+      .top-stats {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .top-pill,
+      .creator-chip,
+      .audio-btn,
+      .theme-btn {
+        min-width: 0;
+        width: 100%;
       }
 
       .action-row,
@@ -1214,6 +1459,7 @@
       <div class="mode-toggle" aria-label="Mode">
         <button id="classicMode" class="active" type="button">Classic</button>
         <button id="hoopMode" type="button">HoopIQ</button>
+        <button id="hardMode" type="button">Hardcore</button>
       </div>
 
       <div class="top-stats" aria-label="Draft status">
@@ -1222,6 +1468,8 @@
           <span>FlashDust Presents</span>
         </div>
         <button class="audio-btn" id="audioBtn" type="button" aria-pressed="false">Audio off</button>
+        <button class="theme-btn" id="themeBtn" type="button" aria-pressed="false">Light</button>
+        <button class="theme-btn" id="ratingBtn" type="button" aria-pressed="false">OVR off</button>
         <div class="top-pill">
           <span>Round</span>
           <strong id="roundTop">1/6</strong>
@@ -1347,7 +1595,10 @@
                 <h2 id="choiceTitle">Player board</h2>
                 <p class="hint" id="choiceHint">Roll the slot to start the draft.</p>
               </div>
-              <span class="badge" id="modeBadge">Stats visible</span>
+              <div class="board-actions">
+                <span class="badge" id="modeBadge">Stats visible</span>
+                <button class="danger-btn compact" id="resetBtn" type="button">New draft</button>
+              </div>
             </div>
             <div class="position-filter" id="positionFilter" aria-label="Filter player board by position"></div>
             <div id="choices" class="player-grid">
@@ -1382,7 +1633,6 @@
       <aside class="roster-panel" aria-label="Roster">
         <div class="roster-head">
           <h2>6-man rotation</h2>
-          <button class="danger-btn" id="resetBtn" type="button">New draft</button>
         </div>
         <div class="roster-grid" id="rosterGrid"></div>
 
@@ -1406,6 +1656,10 @@
           <div class="meter">
             <div class="meter-label"><span>Depth</span><strong id="depthLabel">0</strong></div>
             <div class="bar"><i id="depthBar" style="--bar-color: var(--violet)"></i></div>
+          </div>
+          <div class="meter">
+            <div class="meter-label"><span>Morale / Chemistry</span><strong id="chemLabel">0</strong></div>
+            <div class="bar"><i id="chemBar" style="--bar-color: var(--teal)"></i></div>
           </div>
         </div>
 
@@ -1824,6 +2078,18 @@
       p("Marc Gasol", "Raptors", "2010s", "2018-19", "B", 9.1, 6.6, 3.9, 0.9, 0.9, ["center", "connector"]),
       p("Fred VanVleet", "Raptors", "2010s", "2018-19", "G", 11.0, 2.6, 4.8, 0.9, 0.3, ["guard", "bench"]),
       p("DeMar DeRozan", "Raptors", "2010s", "2016-17", "G", 27.3, 5.2, 3.9, 1.1, 0.2, ["midrange", "scorer"]),
+      p("Vince Carter", "Raptors", "2000s", "2000-01", "W", 27.6, 5.5, 3.9, 1.5, 1.1, ["wing", "scorer"]),
+      p("Chris Bosh", "Raptors", "2000s", "2006-07", "B", 22.6, 10.7, 2.5, 0.6, 1.3, ["big", "touch"]),
+      p("Jose Calderon", "Raptors", "2000s", "2007-08", "G", 11.2, 2.9, 8.3, 1.1, 0.1, ["point guard", "control"]),
+      p("Morris Peterson", "Raptors", "2000s", "2005-06", "W", 16.8, 4.6, 2.3, 1.3, 0.2, ["wing", "shooter"]),
+      p("Damon Stoudamire", "Raptors", "1990s", "1996-97", "G", 20.2, 4.1, 8.8, 1.5, 0.2, ["guard", "creator"]),
+      p("Doug Christie", "Raptors", "1990s", "1997-98", "G", 16.5, 5.2, 3.6, 2.4, 0.7, ["guard", "defense"]),
+      p("Marcus Camby", "Raptors", "1990s", "1997-98", "B", 12.1, 7.4, 1.8, 1.1, 3.7, ["rim", "center"]),
+      p("Antonio Davis", "Raptors", "1990s", "1999-00", "B", 11.5, 8.8, 1.3, 0.5, 1.3, ["big", "glass"]),
+      p("Scottie Barnes", "Raptors", "2020s", "2023-24", "W", 19.9, 8.2, 6.1, 1.3, 1.5, ["forward", "connector"]),
+      p("OG Anunoby", "Raptors", "2020s", "2022-23", "W", 16.8, 5.0, 2.0, 1.9, 0.7, ["wing", "defense"]),
+      p("Jakob Poeltl", "Raptors", "2020s", "2023-24", "B", 11.1, 8.6, 2.5, 0.7, 1.5, ["center", "screen"]),
+      p("Gary Trent Jr.", "Raptors", "2020s", "2021-22", "G", 18.3, 2.7, 2.0, 1.7, 0.3, ["guard", "shooter"]),
 
       p("Tony Parker", "Spurs", "2000s", "2008-09", "G", 22.0, 3.1, 6.9, 0.9, 0.1, ["guard", "paint"]),
       p("Manu Ginobili", "Spurs", "2000s", "2007-08", "G", 19.5, 4.8, 4.5, 1.5, 0.4, ["sixth man", "creator"]),
@@ -1838,6 +2104,13 @@
       p("Rudy Gobert", "Timberwolves", "2020s", "2023-24", "B", 14.0, 12.9, 1.3, 0.7, 2.1, ["rim wall", "glass"]),
       p("Jaden McDaniels", "Timberwolves", "2020s", "2023-24", "W", 10.5, 3.1, 1.4, 0.9, 0.6, ["wing", "defense"]),
       p("Mike Conley", "Timberwolves", "2020s", "2023-24", "G", 11.4, 2.9, 5.9, 1.2, 0.2, ["guard", "control"]),
+      p("Naz Reid", "Timberwolves", "2020s", "2023-24", "B", 13.5, 5.2, 1.3, 0.8, 0.9, ["stretch", "bench"]),
+      p("Nickeil Alexander-Walker", "Timberwolves", "2020s", "2023-24", "G", 8.0, 2.0, 2.5, 0.8, 0.5, ["guard", "defense"]),
+      p("Kyle Anderson", "Timberwolves", "2020s", "2022-23", "W", 9.4, 5.3, 4.9, 1.1, 0.9, ["connector", "forward"]),
+      p("D'Angelo Russell", "Timberwolves", "2020s", "2021-22", "G", 18.1, 3.3, 7.1, 1.0, 0.3, ["guard", "creator"]),
+      p("Malik Beasley", "Timberwolves", "2020s", "2021-22", "G", 12.1, 2.9, 1.5, 0.5, 0.2, ["shooter", "bench"]),
+      p("Patrick Beverley", "Timberwolves", "2020s", "2021-22", "G", 9.2, 4.1, 4.6, 1.2, 0.9, ["guard", "defense"]),
+      p("Jarred Vanderbilt", "Timberwolves", "2020s", "2021-22", "B", 6.9, 8.4, 1.3, 1.3, 0.6, ["glass", "defense"]),
 
       p("Kemba Walker", "Hornets", "2010s", "2018-19", "G", 25.6, 4.4, 5.9, 1.2, 0.4, ["guard", "shotmaker"]),
       p("Al Jefferson", "Hornets", "2010s", "2013-14", "B", 21.8, 10.8, 2.1, 0.9, 1.1, ["post", "glass"]),
@@ -1861,6 +2134,95 @@
       p("Otto Porter Jr.", "Wizards", "2010s", "2017-18", "W", 14.7, 6.4, 2.0, 1.5, 0.5, ["wing", "spacing"]),
       p("Marcin Gortat", "Wizards", "2010s", "2016-17", "B", 10.8, 10.4, 1.5, 0.5, 0.7, ["center", "screen"])
     );
+
+    const DEPTH_TEMPLATES = [
+      ["Lead Guard", "G", 13.8, 3.1, 6.4, 1.1, 0.2, ["guard", "creator"]],
+      ["Combo Guard", "G", 12.4, 3.2, 3.8, 1.0, 0.3, ["guard", "shotmaker"]],
+      ["Three And D Wing", "W", 11.7, 4.4, 2.0, 1.1, 0.5, ["wing", "defense"]],
+      ["Scoring Wing", "W", 15.2, 4.6, 2.4, 0.9, 0.4, ["wing", "scorer"]],
+      ["Glue Forward", "W", 9.8, 5.6, 2.7, 1.0, 0.6, ["connector", "forward"]],
+      ["Stretch Forward", "B", 12.8, 6.4, 1.8, 0.8, 0.8, ["stretch", "big"]],
+      ["Rim Big", "B", 10.5, 8.9, 1.2, 0.7, 1.7, ["rim", "glass"]],
+      ["Bench Spark", "G", 10.9, 2.5, 2.8, 0.8, 0.2, ["bench", "guard"]],
+      ["Defensive Big", "B", 8.7, 7.7, 1.0, 0.8, 1.4, ["defense", "glass"]],
+      ["Rotation Wing", "W", 8.9, 3.9, 1.7, 0.8, 0.3, ["wing", "bench"]]
+    ];
+
+    const REAL_DEPTH_NAMES = {
+      Jazz: ["Jeff Hornacek", "Bryon Russell", "Jeff Malone", "Mark Eaton", "Greg Ostertag", "Howard Eisley", "Shandon Anderson", "Antoine Carr", "Adam Keefe", "Blue Edwards"],
+      Lakers: ["Gail Goodrich", "Norm Nixon", "Michael Cooper", "Byron Scott", "A.C. Green", "Lamar Odom", "Derek Fisher", "Robert Horry", "Rick Fox", "Trevor Ariza", "Austin Reaves", "Rui Hachimura"],
+      Celtics: ["Sam Jones", "Tom Heinsohn", "Jo Jo White", "Dennis Johnson", "Robert Parish", "Danny Ainge", "Cedric Maxwell", "Marcus Smart", "Al Horford", "Derrick White", "Kristaps Porzingis"],
+      Bulls: ["Horace Grant", "B.J. Armstrong", "Bill Cartwright", "Ron Harper", "Toni Kukoc", "Luc Longley", "Steve Kerr", "Derrick Rose", "Joakim Noah", "Luol Deng"],
+      Warriors: ["Nate Thurmond", "Chris Mullin", "Tim Hardaway", "Latrell Sprewell", "Baron Davis", "Monta Ellis", "Klay Thompson", "Draymond Green", "Andre Iguodala", "Andrew Wiggins", "Jordan Poole", "Kevon Looney"],
+      Spurs: ["George Gervin", "James Silas", "Sean Elliott", "Avery Johnson", "Tony Parker", "Manu Ginobili", "Bruce Bowen", "Robert Horry", "Kawhi Leonard", "Danny Green", "Dejounte Murray"],
+      Heat: ["Glen Rice", "Tim Hardaway", "P.J. Brown", "Eddie Jones", "Udonis Haslem", "Chris Bosh", "Ray Allen", "Mario Chalmers", "Bam Adebayo", "Tyler Herro", "Caleb Martin"],
+      Sixers: ["Hal Greer", "Chet Walker", "Billy Cunningham", "Luke Jackson", "Wali Jones", "Andrew Toney", "Maurice Cheeks", "Andre Iguodala", "Kyle Korver", "Andre Miller", "Tyrese Maxey", "Tobias Harris"],
+      Rockets: ["Ralph Sampson", "Robert Horry", "Kenny Smith", "Sam Cassell", "Mario Elie", "Steve Francis", "Shane Battier", "Rafer Alston", "Luis Scola", "Eric Gordon", "Clint Capela"],
+      Knicks: ["Willis Reed", "Dave DeBusschere", "Earl Monroe", "Bill Bradley", "John Starks", "Charles Oakley", "Anthony Mason", "Allan Houston", "Latrell Sprewell", "Jalen Brunson", "Julius Randle"],
+      Bucks: ["Sidney Moncrief", "Bob Dandridge", "Marques Johnson", "Terry Cummings", "Ray Allen", "Glenn Robinson", "Michael Redd", "Khris Middleton", "Jrue Holiday", "Brook Lopez"],
+      Suns: ["Walter Davis", "Kevin Johnson", "Tom Chambers", "Dan Majerle", "Shawn Marion", "Amare Stoudemire", "Joe Johnson", "Mikal Bridges", "Chris Paul", "Deandre Ayton"],
+      Pistons: ["Joe Dumars", "Bill Laimbeer", "Vinnie Johnson", "Mark Aguirre", "Dennis Rodman", "Grant Hill", "Ben Wallace", "Richard Hamilton", "Rasheed Wallace", "Tayshaun Prince"],
+      Thunder: ["Jack Sikma", "Gus Williams", "Dale Ellis", "Detlef Schrempf", "Shawn Kemp", "Rashard Lewis", "Serge Ibaka", "Steven Adams", "Josh Giddey", "Chet Holmgren", "Jalen Williams", "Lu Dort"],
+      Nuggets: ["Fat Lever", "Kiki Vandeweghe", "Dikembe Mutombo", "Antonio McDyess", "Carmelo Anthony", "Nene", "Aaron Gordon", "Michael Porter Jr.", "Kentavious Caldwell-Pope", "Bruce Brown"],
+      Clippers: ["World B. Free", "Randy Smith", "Danny Manning", "Elton Brand", "Corey Maggette", "DeAndre Jordan", "Jamal Crawford", "J.J. Redick", "Lou Williams", "Paul George"],
+      Blazers: ["Terry Porter", "Jerome Kersey", "Buck Williams", "Clifford Robinson", "Rasheed Wallace", "Brandon Roy", "LaMarcus Aldridge", "CJ McCollum", "Nicolas Batum", "Jusuf Nurkic"],
+      Cavaliers: ["Mark Price", "Brad Daugherty", "Larry Nance", "Craig Ehlo", "Zydrunas Ilgauskas", "Mo Williams", "Kevin Love", "J.R. Smith", "Tristan Thompson", "Darius Garland", "Evan Mobley"],
+      Magic: ["Nick Anderson", "Dennis Scott", "Horace Grant", "Darrell Armstrong", "Hedo Turkoglu", "Rashard Lewis", "Jameer Nelson", "J.J. Redick", "Nikola Vucevic", "Paolo Banchero"],
+      Mavericks: ["Rolando Blackman", "Mark Aguirre", "Derek Harper", "Michael Finley", "Steve Nash", "Jason Terry", "Josh Howard", "Shawn Marion", "P.J. Washington", "Daniel Gafford"],
+      Hawks: ["Lou Hudson", "Lenny Wilkens", "Tree Rollins", "Kevin Willis", "Mookie Blaylock", "Dikembe Mutombo", "Joe Johnson", "Josh Smith", "Al Horford", "Paul Millsap", "Jeff Teague", "Kyle Korver"],
+      Nets: ["Buck Williams", "Drazen Petrovic", "Kenny Anderson", "Kerry Kittles", "Kenyon Martin", "Richard Jefferson", "Vince Carter", "Brook Lopez", "Deron Williams", "Joe Johnson", "Jarrett Allen"],
+      Raptors: ["Damon Stoudamire", "Doug Christie", "Marcus Camby", "Antonio Davis", "Morris Peterson", "Jose Calderon", "DeMar DeRozan", "Kyle Lowry", "Pascal Siakam", "Fred VanVleet", "Scottie Barnes", "OG Anunoby"],
+      Hornets: ["Larry Johnson", "Alonzo Mourning", "Muggsy Bogues", "Glen Rice", "Baron Davis", "Gerald Wallace", "Kemba Walker", "Al Jefferson", "Nicolas Batum", "LaMelo Ball", "Miles Bridges", "Terry Rozier"],
+      Wizards: ["Wes Unseld", "Elvin Hayes", "Phil Chenier", "Kevin Porter", "Jeff Malone", "Chris Webber", "Juwan Howard", "Caron Butler", "Antawn Jamison", "Bradley Beal", "Otto Porter Jr.", "Marcin Gortat"],
+      Pelicans: ["Baron Davis", "Jamal Mashburn", "David West", "Tyson Chandler", "Jrue Holiday", "DeMarcus Cousins", "Julius Randle", "Brandon Ingram", "CJ McCollum", "Herbert Jones"],
+      Kings: ["Tiny Archibald", "Sam Lacey", "Mitch Richmond", "Vlade Divac", "Peja Stojakovic", "Mike Bibby", "Doug Christie", "Kevin Martin", "DeMarcus Cousins", "Keegan Murray", "Kevin Huerter", "Harrison Barnes"],
+      Timberwolves: ["Kevin Love", "Ricky Rubio", "Nikola Pekovic", "Andrew Wiggins", "Zach LaVine", "D'Angelo Russell", "Naz Reid", "Nickeil Alexander-Walker", "Kyle Anderson", "Malik Beasley", "Patrick Beverley", "Jarred Vanderbilt"],
+      Pacers: ["Mel Daniels", "Roger Brown", "George McGinnis", "Rik Smits", "Mark Jackson", "Dale Davis", "Jermaine O'Neal", "Danny Granger", "Roy Hibbert", "Myles Turner", "Bennedict Mathurin"],
+      Grizzlies: ["Shareef Abdur-Rahim", "Mike Bibby", "Pau Gasol", "Mike Miller", "Shane Battier", "Jason Williams", "Marc Gasol", "Zach Randolph", "Tony Allen", "Dillon Brooks", "Steven Adams"]
+    };
+
+    function addEraDepthPlayers(targetSize = 12) {
+      const combos = new Map();
+      PLAYERS.forEach(player => {
+        const key = `${player.team}|${player.decade}`;
+        if (!combos.has(key)) combos.set(key, []);
+        combos.get(key).push(player);
+      });
+
+      combos.forEach((players, key) => {
+        const [team, decade] = key.split("|");
+        const usedNames = new Set(players.map(player => player.name));
+        const depthNames = REAL_DEPTH_NAMES[team] || [];
+        let index = 0;
+        while (players.length < targetSize) {
+          const realName = depthNames.find(name => !usedNames.has(name));
+          if (!realName) break;
+          const [label, role, pts, reb, ast, stl, blk, tags] = DEPTH_TEMPLATES[index % DEPTH_TEMPLATES.length];
+          const seasonYear = Number(decade.slice(0, 4)) + Math.min(8, index);
+          const player = p(
+            realName,
+            team,
+            decade,
+            `${seasonYear}-${String((seasonYear + 1) % 100).padStart(2, "0")}`,
+            role,
+            pts + ((index % 3) - 1) * 0.9,
+            reb + ((index % 4) - 1.5) * 0.5,
+            ast + ((index % 2) ? 0.4 : -0.2),
+            stl,
+            blk,
+            [...tags, "era depth"]
+          );
+          player.generated = true;
+          player.estimated = true;
+          PLAYERS.push(player);
+          players.push(player);
+          usedNames.add(realName);
+          index += 1;
+        }
+      });
+    }
+
+    addEraDepthPlayers(12);
 
     const ROSTER_SIZE = 6;
     const POSITIONS = ["PG", "SG", "SF", "PF", "C", "6th"];
@@ -1965,6 +2327,73 @@
       "Penny Hardaway", "Yao Ming", "Dwight Howard", "Alonzo Mourning", "Blake Griffin",
       "Pau Gasol", "Marc Gasol"
     ]);
+    const STAR_RATING_OVERRIDES = {
+      "Michael Jordan": 99,
+      "LeBron James": 99,
+      "Wilt Chamberlain": 99,
+      "Kareem Abdul-Jabbar": 98,
+      "Magic Johnson": 98,
+      "Larry Bird": 98,
+      "Shaquille O'Neal": 98,
+      "Kobe Bryant": 97,
+      "Stephen Curry|2015-16": 99,
+      "Stephen Curry": 97,
+      "Kevin Durant": 96,
+      "Tim Duncan": 96,
+      "Hakeem Olajuwon": 96,
+      "Nikola Jokic": 97,
+      "Giannis Antetokounmpo": 96,
+      "Luka Doncic": 96,
+      "Joel Embiid": 96,
+      "James Harden|2018-19": 97,
+      "Russell Westbrook|2016-17": 96,
+      "Anthony Edwards|2023-24": 89,
+      "John Stockton": 91,
+      "Karl Malone": 94,
+      "Charles Barkley": 94,
+      "David Robinson": 95,
+      "Jerry West": 94,
+      "Oscar Robertson": 96,
+      "Bill Russell": 96,
+      "Shai Gilgeous-Alexander": 96,
+      "Kawhi Leonard": 95,
+      "Anthony Davis": 94,
+      "Jayson Tatum": 93,
+      "Damian Lillard": 93,
+      "Jimmy Butler": 92,
+      "Kyrie Irving": 91,
+      "Karl-Anthony Towns": 89,
+      "Rudy Gobert": 86
+    };
+    const PLAYER_CHEMISTRY_TRAITS = {
+      "Tim Duncan": 8,
+      "Stephen Curry": 8,
+      "Jrue Holiday": 7,
+      "Mike Conley": 7,
+      "Kyle Lowry": 6,
+      "Chris Paul": 5,
+      "LeBron James": 5,
+      "Magic Johnson": 5,
+      "Nikola Jokic": 5,
+      "Al Horford": 5,
+      "Shai Gilgeous-Alexander": 4,
+      "Jayson Tatum": 4,
+      "Kawhi Leonard": 3,
+      "Luka Doncic": 1,
+      "Kobe Bryant": 1,
+      "Michael Jordan": 1,
+      "Russell Westbrook": -3,
+      "James Harden": -3,
+      "Gilbert Arenas": -4,
+      "Rasheed Wallace": -5,
+      "DeMarcus Cousins": -6,
+      "Dillon Brooks": -5,
+      "Draymond Green": -7,
+      "Dennis Rodman": -4,
+      "J.R. Smith": -3,
+      "Ja Morant": -3,
+      "Anthony Edwards": -1
+    };
     const COURT_SPOTS = [
       [252, 116], [358, 234], [480, 150], [602, 234], [708, 116],
       [252, 292], [358, 304], [480, 300], [602, 304], [708, 292]
@@ -1973,7 +2402,10 @@
     const els = {
       classicMode: document.getElementById("classicMode"),
       hoopMode: document.getElementById("hoopMode"),
+      hardMode: document.getElementById("hardMode"),
       audioBtn: document.getElementById("audioBtn"),
+      themeBtn: document.getElementById("themeBtn"),
+      ratingBtn: document.getElementById("ratingBtn"),
       roundTop: document.getElementById("roundTop"),
       recordTop: document.getElementById("recordTop"),
       powerTop: document.getElementById("powerTop"),
@@ -2003,11 +2435,13 @@
       astLabel: document.getElementById("astLabel"),
       defLabel: document.getElementById("defLabel"),
       depthLabel: document.getElementById("depthLabel"),
+      chemLabel: document.getElementById("chemLabel"),
       ptsBar: document.getElementById("ptsBar"),
       rebBar: document.getElementById("rebBar"),
       astBar: document.getElementById("astBar"),
       defBar: document.getElementById("defBar"),
       depthBar: document.getElementById("depthBar"),
+      chemBar: document.getElementById("chemBar"),
       courtPlayers: document.getElementById("courtPlayers"),
       resetBtn: document.getElementById("resetBtn"),
       seasonCard: document.getElementById("seasonCard"),
@@ -2031,6 +2465,8 @@
       teamSkips: 1,
       eraSkips: 1,
       mode: "classic",
+      theme: localStorage.getItem("howManyRingsTheme") || "dark",
+      showRatings: localStorage.getItem("howManyRingsShowRatings") === "true",
       positionFilter: "ALL",
       audioOn: false,
       sfxOn: true,
@@ -2213,10 +2649,23 @@
     }
 
     function playerRating(player) {
-      const offense = adjustedStat(player, "pts") * 1.05 + adjustedStat(player, "ast") * 2.18;
-      const defense = adjustedStat(player, "reb") * 0.82 + adjustedStat(player, "stl") * 5.2 + adjustedStat(player, "blk") * 4.35;
-      const roleBump = player.role === "G" ? 1.2 : player.role === "W" ? 1.0 : 1.35;
-      return Math.round(clamp((offense + defense) * 0.88 + 32 + roleBump, 60, 99));
+      const exactOverride = STAR_RATING_OVERRIDES[`${player.name}|${player.season}`];
+      const nameOverride = STAR_RATING_OVERRIDES[player.name];
+      if (exactOverride) return exactOverride;
+      if (nameOverride) return nameOverride;
+
+      const offense = adjustedStat(player, "pts") * 1.04 + adjustedStat(player, "ast") * 1.82;
+      const defense = adjustedStat(player, "reb") * 0.68 + adjustedStat(player, "stl") * 4.15 + adjustedStat(player, "blk") * 3.05;
+      const tagBump = player.tags.reduce((sum, tag) => {
+        if (tag === "era depth") return sum - 3.6;
+        if (["engine", "gravity", "creator", "two-way", "closer", "rim wall", "anchor"].includes(tag)) return sum + 1.6;
+        if (["defense", "scorer", "shotmaker", "hub", "range", "paint force"].includes(tag)) return sum + 1.0;
+        if (["shooter", "glass", "control", "connector", "stretch"].includes(tag)) return sum + 0.5;
+        return sum;
+      }, 0);
+      const roleBump = player.role === "G" ? 1.4 : player.role === "W" ? 1.2 : 1.6;
+      const maxRating = player.generated ? 74 : HALL_OF_FAME_LEVEL_NAMES.has(player.name) ? 95 : 91;
+      return Math.round(clamp((offense + defense) * 0.86 + 34 + roleBump + tagBump, 58, maxRating));
     }
 
     function isHallOfFameLevel(player) {
@@ -2237,10 +2686,11 @@
     function comboRollWeight(combo) {
       const strength = comboStrength(combo);
       const success = TEAM_SUCCESS[combo.team] || 5;
-      const weakEraBoost = clamp((97 - strength) / 11, 0.28, 4.8);
-      const franchiseBoost = clamp((11.5 - success) / 3.2, 0.38, 2.95);
-      const elitePenalty = success >= 7 && strength >= 90 ? 0.42 : 1;
-      const roughEraOnGreatTeamBoost = success >= 7 && strength < 84 ? 2.15 : 1;
+      const hard = state.mode === "hardcore";
+      const weakEraBoost = clamp(((hard ? 101 : 97) - strength) / (hard ? 9 : 11), hard ? 0.18 : 0.28, hard ? 6.4 : 4.8);
+      const franchiseBoost = clamp(((hard ? 13 : 11.5) - success) / (hard ? 2.65 : 3.2), hard ? 0.24 : 0.38, hard ? 4.4 : 2.95);
+      const elitePenalty = success >= 7 && strength >= 90 ? (hard ? 0.24 : 0.42) : 1;
+      const roughEraOnGreatTeamBoost = success >= 7 && strength < 84 ? (hard ? 2.9 : 2.15) : 1;
       const scarcityBoost = candidatesFor(combo).length <= MIN_ROLL_CHOICES ? 1.22 : 1;
       return weakEraBoost * weakEraBoost * franchiseBoost * elitePenalty * roughEraOnGreatTeamBoost * scarcityBoost;
     }
@@ -2397,6 +2847,16 @@
       return clamp(((guard + wing + big) / 3) - excessPenalty, 0.45, 1);
     }
 
+    function chemistryScore(roster) {
+      const filled = roster.filter(Boolean);
+      if (!filled.length) return 0;
+      const traitTotal = filled.reduce((sum, player) => sum + (PLAYER_CHEMISTRY_TRAITS[player.name] || 0), 0);
+      const duplicateRolePenalty = Math.max(0, filled.filter(player => player.role === "G").length - 3) * 3;
+      const eraBlend = new Set(filled.map(player => player.decade)).size;
+      const eraBonus = Math.min(8, eraBlend * 1.4);
+      return clamp(72 + traitTotal + eraBonus - duplicateRolePenalty, 35, 108);
+    }
+
     function teamBreakdown() {
       const weighted = weightedRoster();
       const totals = { pts: 0, reb: 0, ast: 0, stl: 0, blk: 0, rating: 0 };
@@ -2426,16 +2886,18 @@
       const depth = rosterCount() < ROSTER_SIZE ? 0 : clamp((benchAvg / Math.max(starterAvg, 1)) * 100, 0, 100);
       const defense = normalized.def;
       const role = roleBalance(state.roster) * 100;
+      const chemistry = rosterCount() < ROSTER_SIZE ? 0 : chemistryScore(state.roster);
       const eraVariety = clamp((new Set(filledRoster().map(player => player.decade)).size / 7) * 100, 0, 100);
       const power = clamp(
-        (categoryAverage * 0.5) +
+        (categoryAverage * 0.48) +
         (balance * 0.14) +
         (depth * 0.13) +
         (defense * 0.1) +
-        (role * 0.1) +
+        (role * 0.08) +
+        (chemistry * 0.05) +
         (eraVariety * 0.04),
         0,
-        108
+        112
       );
 
       return {
@@ -2445,6 +2907,7 @@
         depth,
         defense,
         role,
+        chemistry,
         eraVariety,
         power
       };
@@ -2598,6 +3061,19 @@
       els.audioBtn.setAttribute("aria-pressed", String(state.audioOn));
     }
 
+    function toggleTheme() {
+      state.theme = state.theme === "dark" ? "light" : "dark";
+      localStorage.setItem("howManyRingsTheme", state.theme);
+      renderTheme();
+    }
+
+    function renderTheme() {
+      const isLight = state.theme === "light";
+      document.body.classList.toggle("light-theme", isLight);
+      els.themeBtn.textContent = isLight ? "Dark" : "Light";
+      els.themeBtn.setAttribute("aria-pressed", String(isLight));
+    }
+
     function playSfx(kind = "click") {
       if (!state.sfxOn) return;
       const ctx = initAudio();
@@ -2637,9 +3113,9 @@
 
       for (let year = 1; year <= 10; year += 1) {
         const agingSwing = normal(rand) * 3.1;
-        const chemistry = (profile.balance - 78) * 0.065 + (profile.depth - 70) * 0.045 + (profile.role - 76) * 0.035;
-        const yearPower = profile.power + agingSwing + chemistry;
-        const wins = Math.round(clamp(39 + ((yearPower - 66) * 0.72) + normal(rand) * 4.5, 34, 73));
+        const chemistryLift = (profile.balance - 78) * 0.07 + (profile.depth - 70) * 0.05 + (profile.role - 76) * 0.04 + (profile.chemistry - 72) * 0.075;
+        const yearPower = profile.power + agingSwing + chemistryLift;
+        const wins = Math.round(clamp(40 + ((yearPower - 65) * 0.78) + normal(rand) * 4.2, 34, 75));
         totalWins += wins;
 
         let roundReached = 0;
@@ -2647,13 +3123,14 @@
         if (wins >= 44) {
           exit = "Round 1";
           for (let round = 1; round <= 4; round += 1) {
-            const pressure = 78 + round * 4.8 + normal(rand) * 4.9;
-            const defenseLift = (profile.defense - 78) * 0.032;
-            const creationLift = (profile.normalized.ast - 78) * 0.028;
-            const balanceLift = (profile.balance - 76) * 0.028;
-            const depthLift = round >= 3 ? (profile.depth - 68) * 0.032 : (profile.depth - 68) * 0.014;
-            const contenderTax = round >= 3 ? 3.4 : 0;
-            const playoffScore = yearPower + defenseLift + creationLift + balanceLift + depthLift + normal(rand) * 6.1 - contenderTax;
+            const pressure = 75 + round * 4.35 + normal(rand) * 4.6;
+            const defenseLift = (profile.defense - 78) * 0.04;
+            const creationLift = (profile.normalized.ast - 78) * 0.038;
+            const balanceLift = (profile.balance - 76) * 0.04;
+            const depthLift = round >= 3 ? (profile.depth - 68) * 0.04 : (profile.depth - 68) * 0.018;
+            const chemistryPlayoff = (profile.chemistry - 72) * 0.065;
+            const contenderTax = round >= 3 ? 2.2 : 0;
+            const playoffScore = yearPower + defenseLift + creationLift + balanceLift + depthLift + chemistryPlayoff + normal(rand) * 5.6 - contenderTax;
             if (playoffScore >= pressure) {
               roundReached = round;
               exit = round === 1 ? "Semis" : round === 2 ? "Conference Finals" : round === 3 ? "Finals" : "Champions";
@@ -2676,6 +3153,15 @@
         rings = years.filter(year => year.ring).length;
         finals = years.filter(year => year.finals).length;
       }
+      if (profile.power >= 95 && rings < 2) {
+        enforceDynastyFloor(years, 2);
+        rings = years.filter(year => year.ring).length;
+        finals = years.filter(year => year.finals).length;
+      } else if (profile.power >= 88 && rings < 1) {
+        enforceDynastyFloor(years, 1);
+        rings = years.filter(year => year.ring).length;
+        finals = years.filter(year => year.finals).length;
+      }
 
       state.sim = {
         rings,
@@ -2690,6 +3176,7 @@
       saveBest(state.sim);
       playSfx(rings > 0 ? "ring" : "click");
       render();
+      setTimeout(() => els.seasonCard.scrollIntoView({ behavior: "smooth", block: "start" }), 60);
     }
 
     function saveBest(sim) {
@@ -2740,6 +3227,13 @@
       render();
     }
 
+    function toggleRatings() {
+      state.showRatings = !state.showRatings;
+      localStorage.setItem("howManyRingsShowRatings", String(state.showRatings));
+      playSfx("click");
+      render();
+    }
+
     function render() {
       const profile = teamBreakdown();
       const filled = rosterCount();
@@ -2764,8 +3258,12 @@
       els.defenseMini.textContent = Math.round(profile.defense);
       els.classicMode.classList.toggle("active", state.mode === "classic");
       els.hoopMode.classList.toggle("active", state.mode === "hoop");
-      els.modeBadge.textContent = state.mode === "classic" ? "Stats visible" : "Stats hidden";
+      els.hardMode.classList.toggle("active", state.mode === "hardcore");
+      els.modeBadge.textContent = state.mode === "classic" ? "Stats focus" : state.mode === "hardcore" ? "Hardcore" : "Stats hidden";
+      els.ratingBtn.textContent = state.showRatings ? "OVR on" : "OVR off";
+      els.ratingBtn.setAttribute("aria-pressed", String(state.showRatings));
 
+      renderTheme();
       updateMeters(profile);
       renderAudio();
       renderChoices();
@@ -2781,7 +3279,8 @@
         ["reb", profile.normalized.reb, els.rebLabel, els.rebBar],
         ["ast", profile.normalized.ast, els.astLabel, els.astBar],
         ["def", profile.normalized.def, els.defLabel, els.defBar],
-        ["depth", profile.depth, els.depthLabel, els.depthBar]
+        ["depth", profile.depth, els.depthLabel, els.depthBar],
+        ["chemistry", profile.chemistry, els.chemLabel, els.chemBar]
       ];
       entries.forEach(([, value, label, bar]) => {
         const rounded = Math.round(value);
@@ -2833,8 +3332,9 @@
 
     function playerCard(player) {
       const team = TEAMS[player.team];
-      const hidden = state.mode === "hoop";
+      const hidden = state.mode === "hoop" || state.mode === "hardcore";
       const available = canDraftPlayer(player);
+      const rating = playerRating(player);
       return `
         <button class="player-card ${available ? "" : "unavailable"}" data-player-id="${player.id}" type="button" style="--accent:${team.color}" ${available ? "" : "disabled"}>
           <span class="sr-only">Draft ${player.name}</span>
@@ -2844,10 +3344,10 @@
               <strong>${player.name}</strong>
               <span>${team.full} - ${player.season} - ${legalPositions(player).join("/")}</span>
             </span>
-            <span class="rating-chip">${hidden ? "?" : playerRating(player)}</span>
+            ${state.showRatings ? `<span class="rating-chip">${state.mode === "hoop" ? "?" : rating}</span>` : ""}
           </span>
           ${hidden ? `
-            <span class="hidden-line">HoopIQ card</span>
+            <span class="hidden-line">${state.mode === "hardcore" ? "Hardcore card" : "HoopIQ card"}</span>
           ` : `
             <span class="stat-row">
               ${statCell("PTS", player.pts)}
@@ -2859,7 +3359,8 @@
           `}
           <span class="tag-row">
             ${POSITIONS.map(pos => positionChip(player, pos)).join("")}
-            ${player.tags.map(tag => `<span class="tag">${tag}</span>`).join("")}
+            ${player.tags.filter(tag => tag !== "era depth").map(tag => `<span class="tag">${tag}</span>`).join("")}
+            ${player.estimated ? `<span class="tag">team depth</span>` : ""}
           </span>
         </button>
       `;
@@ -2894,12 +3395,13 @@
           <div class="slot-card">
             <div class="slot-num">
               <span>${POSITIONS[i]}</span>
-              <span>${role} - ${playerRating(player)}</span>
+              <span>${state.showRatings ? `${role} - ${playerRating(player)}` : role}</span>
             </div>
             <strong class="slot-name">${player.name}</strong>
             <span class="slot-meta">${TEAMS[player.team].full} - ${player.decade}</span>
             <div class="position-row" aria-label="${player.name} eligible positions">
-              ${legalPositions(player).map(pos => `<span class="pos-chip">${pos}</span>`).join("")}
+              <span class="pos-chip current">${POSITIONS[i]}</span>
+              ${legalPositions(player).filter(pos => pos !== POSITIONS[i]).map(pos => `<span class="pos-chip">${pos}</span>`).join("")}
             </div>
             <div class="position-row" aria-label="Move ${player.name}">
               ${moves.length ? moves.map(({ label, index }) => `<button class="move-chip" type="button" data-from="${i}" data-to="${index}">${label}</button>`).join("") : `<span class="pos-chip">Locked</span>`}
@@ -2975,6 +3477,8 @@
     }
 
     els.audioBtn.addEventListener("click", toggleAudio);
+    els.themeBtn.addEventListener("click", toggleTheme);
+    els.ratingBtn.addEventListener("click", toggleRatings);
     document.addEventListener("pointerdown", event => {
       if (event.target.closest("button")) playSfx("click");
     }, { capture: true });
@@ -2986,6 +3490,7 @@
     els.copyBtn.addEventListener("click", copyRoster);
     els.classicMode.addEventListener("click", () => setMode("classic"));
     els.hoopMode.addEventListener("click", () => setMode("hoop"));
+    els.hardMode.addEventListener("click", () => setMode("hardcore"));
     els.resetBtn.addEventListener("click", () => {
       playSfx("click");
       if (rosterCount() === 0) resetDraft();
