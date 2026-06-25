@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111827">
+    <title>Legacy League</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles/main.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="./index.html" aria-label="Legacy League home">
+          <img src="assets/icon.svg" alt="" class="brand-mark">
+          <span>
+            <strong>Legacy League</strong>
+            <small>Career Sports Life Sim</small>
+          </span>
+        </a>
+        <nav class="top-actions" id="topActions" aria-label="Quick saves"></nav>
+      </header>
+
+      <main id="app" class="app-main"></main>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </div>
+
+    <script src="scripts/gameData.js"></script>
+    <script src="scripts/gameLogic.js"></script>
+    <script src="scripts/storage.js"></script>
+    <script src="scripts/app.js"></script>
+  </body>
+</html>
